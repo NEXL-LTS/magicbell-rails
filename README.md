@@ -1,3 +1,5 @@
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/NEXL-LTS/magicbell-rails/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/NEXL-LTS/magicbell-rails/tree/main)
+
 # Magicbell::Rails
 
 Wrapper around magicbell api to deliver notifications to your users in a background job
