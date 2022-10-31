@@ -2,10 +2,6 @@
 
 Wrapper around magicbell api to deliver notifications to your users in a background job
 
-## Usage
-
-How to use my plugin.
-
 ## Installation
 
 Add this line to your application's Gemfile:
