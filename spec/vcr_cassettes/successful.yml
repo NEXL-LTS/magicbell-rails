@@ -1,0 +1,73 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.magicbell.com/graphql
+    body:
+      encoding: UTF-8
+      string: '{"query":"mutation Magicbell__Rails__DeliverNotificationJob__Query($input:
+        CreateNotificationInput!) {\n  createNotification(input: $input) {\n    clientMutationId\n    errors
+        {\n      location\n      message\n    }\n    notification {\n      id\n    }\n  }\n}","variables":{"input":{"title":"value","recipients":[{"email":"grant@nexl.io"}]}},"operationName":"Magicbell__Rails__DeliverNotificationJob__Query"}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Content-Type:
+      - application/json
+      X-Magicbell-Api-Key:
+      - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      X-Magicbell-Api-Secret:
+      - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Sat, 29 Oct 2022 23:11:27 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Etag:
+      - W/"81a426838f09a6badcd95f251d1cbffe"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 9e1ed51d-a7e0-4c33-869b-6b9ae7b20cb5
+      X-Runtime:
+      - '0.027400'
+      Vary:
+      - Origin
+      Cf-Cache-Status:
+      - DYNAMIC
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=EdxjUjvyyfOFmcn%2FU2iZZDRdfi5CQzNev1nSghw5gie98GBrLD61V%2B%2FecKeA%2FlWWRoGHdNY%2BvTtwYDNtu9BrwZ3lqOV5zYVv4OIcTk%2FcGuZshfkeWLQmCCD6WD11qvQIBxOOVY3KPDsnCy9bvcK%2B"}],"group":"cf-nel","max_age":604800}'
+      Nel:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 761f971efe3a5ac4-MEL
+    body:
+      encoding: ASCII-8BIT
+      string: '{"data":{"createNotification":{"clientMutationId":null,"errors":null,"notification":{"id":"5691f407-24ca-4195-979d-ad67ba3579dd"}}}}'
+  recorded_at: Sat, 29 Oct 2022 23:11:27 GMT
+recorded_with: VCR 6.1.0

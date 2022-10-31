@@ -1,0 +1,46 @@
+inherit_from: ../.rubocop.yml
+
+Metrics/ModuleLength:
+  Enabled: false
+
+Style/MultilineBlockChain:
+  Enabled: false
+
+Rails/SkipsModelValidations:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Max: 15
+  Exclude:
+    - "features/custom_field/when_opportunity_with_custom_field_spec.rb"
+
+RSpec/NamedSubject:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Max: 4
+
+RSpec/LetSetup:
+  Enabled: false
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 15
+
+RSpec/AnyInstance:
+  Enabled: false
+
+RSpec/MessageChain:
+  Exclude:
+    - "jobs/g_suite/*_spec.rb"
+
+RSpec/NoExpectationExample:
+  Enabled: false
+
+RSpec/ExampleWording:
+  Enabled: false
+
+RSpec/FactoryBot/ConsistentParenthesesStyle:
+  Enabled: false

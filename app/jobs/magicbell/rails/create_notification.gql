@@ -1,0 +1,10 @@
+mutation($input: CreateNotificationInput!) {
+    createNotification(input: $input) {
+        clientMutationId
+        errors {
+          location
+          message
+        }
+        notification { id }
+    }
+}

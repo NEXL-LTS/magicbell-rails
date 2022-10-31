@@ -1,0 +1,68 @@
+require:
+  - rubocop-rails
+  - rubocop-rspec
+
+AllCops:
+  NewCops: enable
+  Exclude:
+    - "vendor/**/*"
+    - "**/vendor/bundle/**/*"
+    - "tmp/**/*"
+    - "bin/bundle"
+    - "coverage/**/*"
+    - "db/migrate/*"
+    - "db/schema.rb"
+
+Metrics/BlockLength:
+  Exclude:
+    - "db/seeds.rb"
+    - "config/environments/*.rb"
+Metrics/AbcSize:
+  Max: 30
+Metrics/ClassLength:
+  Max: 200
+Metrics/ModuleLength:
+  Max: 200
+Metrics/CyclomaticComplexity:
+  Max: 8
+Metrics/MethodLength:
+  Max: 10
+  Exclude:
+    - "app/graphql/types/event_item_type.rb"
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+Style/Documentation:
+  Enabled: false
+Style/AsciiComments:
+  Enabled: false
+Style/AccessModifierDeclarations:
+  Enabled: false
+Style/OpenStructUse:
+  Enabled: false
+Style/FetchEnvVar:
+  Enabled: false
+Style/HashSyntax:
+  EnforcedShorthandSyntax: either
+
+Naming/VariableNumber:
+  CheckSymbols: false
+
+Layout/LineEndStringConcatenationIndentation:
+  Enabled: false
+Layout/LineLength:
+  Max: 109
+  AllowedPatterns: ['\A#']
+
+Rails/FilePath:
+  Enabled: false
+Rails/ContentTag:
+  Enabled: false
+Rails/I18nLocaleTexts:
+  Enabled: false
+Rails/SkipsModelValidations:
+  Exclude:
+    - "app/services/lists/mailchimp_service.rb"
+    - "app/models/tag_management/taggable.rb"
+Rails/Pluck:
+  Enabled: false
