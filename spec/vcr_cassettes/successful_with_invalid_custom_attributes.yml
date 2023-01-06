@@ -5,12 +5,12 @@ http_interactions:
     uri: https://api.magicbell.io/notifications
     body:
       encoding: UTF-8
-      string: '{"notification":{"title":"value","recipients":[{"email":"grant@nexl.io"}]}}'
+      string: '{"notification":{"title":"value","custom_attributes":"NotAHash","recipients":[{"email":"grant@nexl.io"}]}}'
     headers:
       X-Magicbell-Api-Key:
       - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
       X-Magicbell-Api-Secret:
-      - asdasdasd
+      - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
       Content-Type:
       - application/json
       Accept:
@@ -21,11 +21,11 @@ http_interactions:
       - Ruby
   response:
     status:
-      code: 401
-      message: Unauthorized
+      code: 422
+      message: Unprocessable Entity
     headers:
       Date:
-      - Fri, 06 Jan 2023 11:30:44 GMT
+      - Fri, 06 Jan 2023 11:12:36 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -47,25 +47,24 @@ http_interactions:
       Cache-Control:
       - no-cache
       X-Request-Id:
-      - 2d65117a-79de-4729-afa5-e925500ab6a4
+      - aa861240-b44e-4e62-bb1c-52388be67d52
       X-Runtime:
-      - '0.009613'
+      - '0.013294'
       Vary:
       - Origin
       Cf-Cache-Status:
       - DYNAMIC
       Report-To:
-      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=GAIX0Cfmx%2FiC6kd53GDBs1d7noDzZo8uY4iXD%2Frz5dHWV3T1oql%2FHVjkhPxGfLfhh3RiJzG7YW9uO008tRMWe8QXQwK%2B%2FVjsROvGDqWAgKBujlspbaqmNl%2FHHlT8BUjT%2Bdc%3D"}],"group":"cf-nel","max_age":604800}'
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=2W1EOswAy4vKyflzp0tBqyIGmGR6hAAUhcYXRajZTfbdVDPKljP9SiQbqrhapbk%2FAH2rXAvXR2%2BOqmHkD1vqYE9T3G2Q0oHVJtQVq4IRJu8Ra%2Fu5gpDMDAv02G%2BVZ9np%2Fio%3D"}],"group":"cf-nel","max_age":604800}'
       Nel:
       - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
       Server:
       - cloudflare
       Cf-Ray:
-      - 78541f8a6cbea93d-SYD
+      - 785404fd0ebca825-SYD
     body:
       encoding: UTF-8
-      string: '{"errors":[{"code":"api_secret_is_incorrect","message":"API Secret
-        is incorrect","suggestion":"Please provide your MagicBell project''s correct
-        API Secret in the ''X-MAGICBELL-API-SECRET'' header","help_link":"https://magicbell.com/docs/rest-api/authentication"}]}'
-  recorded_at: Fri, 06 Jan 2023 11:30:44 GMT
+      string: '{"errors":[{"message":"Param ''notification.custom_attributes'' must
+        be a hash"}]}'
+  recorded_at: Fri, 06 Jan 2023 11:12:36 GMT
 recorded_with: VCR 6.1.0

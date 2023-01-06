@@ -12,8 +12,8 @@ module Magicbell
 
       it 'works' do
         notification = instance_double(Magicbell::Rails::Notification,
-                                       to_graphql_hash: { 'title' => 'value',
-                                                          'recipients' => [{ 'email' => 'grant@nexl.io' }] })
+                                       to_bell_hash: { 'title' => 'value',
+                                                       'recipients' => [{ 'email' => 'grant@nexl.io' }] })
 
         VCR.use_cassette('successful') do
           subject.perform(notification, result_creator: result_creator)
@@ -21,6 +21,33 @@ module Magicbell
 
         expect(result_creator).to have_received(:create).with(notification: notification,
                                                               result: kind_of(Hash))
+      end
+
+      it 'works with custom_attributes' do
+        notification = instance_double(Magicbell::Rails::Notification,
+                                       to_bell_hash: { 'title' => 'value',
+                                                       'custom_attributes' => { 'example' => '1' },
+                                                       'recipients' => [{ 'email' => 'grant@nexl.io' }] })
+
+        VCR.use_cassette('successful_with_custom_attributes') do
+          subject.perform(notification, result_creator: result_creator)
+        end
+
+        expect(result_creator).to have_received(:create).with(notification: notification,
+                                                              result: kind_of(Hash))
+      end
+
+      it 'raises error if invalid attributes' do
+        notification = instance_double(Magicbell::Rails::Notification,
+                                       to_bell_hash: { 'title' => 'value',
+                                                       'custom_attributes' => 'NotAHash',
+                                                       'recipients' => [{ 'email' => 'grant@nexl.io' }] })
+
+        VCR.use_cassette('successful_with_invalid_custom_attributes') do
+          expect do
+            subject.perform(notification, result_creator: result_creator)
+          end.to raise_error(MagicBell::Client::HTTPError)
+        end
       end
 
       it 'skips when no api_secret' do
@@ -37,14 +64,13 @@ module Magicbell
         Rails.api_secret = 'asdasdasd'
 
         notification = instance_double(Magicbell::Rails::Notification,
-                                       to_graphql_hash: { 'title' => 'value',
-                                                          'recipients' => [{ 'email' => 'grant@nexl.io' }] })
+                                       to_bell_hash: { 'title' => 'value',
+                                                       'recipients' => [{ 'email' => 'grant@nexl.io' }] })
 
         VCR.use_cassette('unsuccessful') do
           expect do
-            subject.perform(notification,
-                            result_creator: result_creator)
-          end.to raise_error(Error, a_string_including('Unauthorized'))
+            subject.perform(notification, result_creator: result_creator)
+          end.to raise_error(MagicBell::Client::HTTPError)
         end
 
         expect(result_creator).not_to have_received(:create)

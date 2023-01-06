@@ -5,7 +5,7 @@ module Magicbell
 
       has_many :phones, dependent: :destroy
 
-      def to_graphql_hash
+      def to_bell_hash
         attributes.except('id', 'created_at', 'updated_at', 'notification_id')
                   .merge('phone_numbers' => phones.map(&:number))
                   .compact_blank

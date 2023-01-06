@@ -1,6 +1,3 @@
-require 'graphql/client'
-require 'graphql/client/http'
-
 module Magicbell
   module Rails
     class Engine < ::Rails::Engine

@@ -1,3 +1,4 @@
+require 'debug'
 if ENV.key?('COVERAGE')
   require 'simplecov'
   SimpleCov.start 'rails' do
