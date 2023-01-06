@@ -5,12 +5,12 @@ http_interactions:
     uri: https://api.magicbell.io/notifications
     body:
       encoding: UTF-8
-      string: '{"notification":{"title":"value","recipients":[{"email":"grant@nexl.io"}]}}'
+      string: '{"notification":{"title":"value","custom_attributes":{"example":"1"},"recipients":[{"email":"grant@nexl.io"}]}}'
     headers:
       X-Magicbell-Api-Key:
       - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
       X-Magicbell-Api-Secret:
-      - asdasdasd
+      - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
       Content-Type:
       - application/json
       Accept:
@@ -21,15 +21,15 @@ http_interactions:
       - Ruby
   response:
     status:
-      code: 401
-      message: Unauthorized
+      code: 201
+      message: Created
     headers:
       Date:
-      - Fri, 06 Jan 2023 11:30:44 GMT
+      - Fri, 06 Jan 2023 11:10:06 GMT
       Content-Type:
       - application/json; charset=utf-8
-      Transfer-Encoding:
-      - chunked
+      Content-Length:
+      - '195'
       Connection:
       - keep-alive
       X-Frame-Options:
@@ -44,28 +44,28 @@ http_interactions:
       - none
       Referrer-Policy:
       - strict-origin-when-cross-origin
+      Etag:
+      - W/"156b21dd96074e7e589a54ef3b4e47d0"
       Cache-Control:
-      - no-cache
+      - max-age=0, private, must-revalidate
       X-Request-Id:
-      - 2d65117a-79de-4729-afa5-e925500ab6a4
+      - fee9d144-7b14-4775-acaf-01a9e32fcb36
       X-Runtime:
-      - '0.009613'
+      - '0.024155'
       Vary:
       - Origin
       Cf-Cache-Status:
       - DYNAMIC
       Report-To:
-      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=GAIX0Cfmx%2FiC6kd53GDBs1d7noDzZo8uY4iXD%2Frz5dHWV3T1oql%2FHVjkhPxGfLfhh3RiJzG7YW9uO008tRMWe8QXQwK%2B%2FVjsROvGDqWAgKBujlspbaqmNl%2FHHlT8BUjT%2Bdc%3D"}],"group":"cf-nel","max_age":604800}'
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=YLxJUXp7TRCUZP89AftKdw6lsiJVeTWgYDYNI%2BrPBSbBEiMM%2Fpw9LOa9brmY%2FdjE6yexdDuid%2F6i7saFS%2BSWvEwo3VkBl7yWZbz0uE8%2BwKsGGXUuB9PRC4sh9Nmw5wLHylM%3D"}],"group":"cf-nel","max_age":604800}'
       Nel:
       - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
       Server:
       - cloudflare
       Cf-Ray:
-      - 78541f8a6cbea93d-SYD
+      - 785401547881dfc1-SYD
     body:
       encoding: UTF-8
-      string: '{"errors":[{"code":"api_secret_is_incorrect","message":"API Secret
-        is incorrect","suggestion":"Please provide your MagicBell project''s correct
-        API Secret in the ''X-MAGICBELL-API-SECRET'' header","help_link":"https://magicbell.com/docs/rest-api/authentication"}]}'
-  recorded_at: Fri, 06 Jan 2023 11:30:44 GMT
+      string: '{"notification":{"id":"dc0c4f4c-e9c2-4fe2-85a4-6cea5080d9a4","title":"value","content":null,"action_url":null,"category":"","topic":null,"custom_attributes":{"example":"1"},"sent_at":1673003406}}'
+  recorded_at: Fri, 06 Jan 2023 11:10:06 GMT
 recorded_with: VCR 6.1.0

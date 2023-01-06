@@ -23,11 +23,10 @@ module Magicbell
         DeliverNotificationJob.perform_later(self)
       end
 
-      def to_graphql_hash
+      def to_bell_hash
         attributes.except('id', 'created_at', 'updated_at')
-                  .merge('recipients' => recipients.map(&:to_graphql_hash))
+                  .merge('recipients' => recipients.map(&:to_bell_hash))
                   .compact_blank
-                  .deep_transform_keys { |key| key.to_s.camelcase(:lower) }
       end
     end
   end

@@ -2,7 +2,7 @@ require 'magicbell/rails/engine' # rubocop:disable Naming/FileName
 
 module Magicbell
   module Rails
-    class Error < StandardError; end
+    Error = Class.new(StandardError)
 
     cattr_accessor :queue_name, default: :default
     cattr_accessor :api_key, default: ENV['MAGICBELL_API_KEY']

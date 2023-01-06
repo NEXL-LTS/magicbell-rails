@@ -2,37 +2,34 @@
 http_interactions:
 - request:
     method: post
-    uri: https://api.magicbell.com/graphql
+    uri: https://api.magicbell.io/notifications
     body:
       encoding: UTF-8
-      string: '{"query":"mutation Magicbell__Rails__DeliverNotificationJob__Query($input:
-        CreateNotificationInput!) {\n  createNotification(input: $input) {\n    clientMutationId\n    errors
-        {\n      location\n      message\n    }\n    notification {\n      id\n    }\n  }\n}","variables":{"input":{"title":"Welcome
-        to MagicBell","recipients":[{"email":"grant@nexl.io"}]}},"operationName":"Magicbell__Rails__DeliverNotificationJob__Query"}'
+      string: '{"notification":{"title":"Welcome to MagicBell","recipients":[{"email":"grant@nexl.io"}]}}'
     headers:
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - application/json
-      User-Agent:
-      - Ruby
-      Content-Type:
-      - application/json
       X-Magicbell-Api-Key:
       - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
       X-Magicbell-Api-Secret:
       - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - Ruby
   response:
     status:
-      code: 200
-      message: OK
+      code: 201
+      message: Created
     headers:
       Date:
-      - Sat, 29 Oct 2022 23:23:18 GMT
+      - Fri, 06 Jan 2023 11:33:22 GMT
       Content-Type:
       - application/json; charset=utf-8
-      Transfer-Encoding:
-      - chunked
+      Content-Length:
+      - '199'
       Connection:
       - keep-alive
       X-Frame-Options:
@@ -48,27 +45,28 @@ http_interactions:
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Etag:
-      - W/"a5b2ced3d708e12db14c32a7ca1a2714"
+      - W/"0bbd87d74ffd8b824033162a54993865"
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - 0dfd0362-d827-4793-8f5e-9b6526950d83
+      - 1e971f0a-1a5f-4131-a786-7381d3f10f8c
       X-Runtime:
-      - '0.027228'
+      - '0.026392'
       Vary:
       - Origin
       Cf-Cache-Status:
       - DYNAMIC
       Report-To:
-      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=3JgzWy79j0yKBPVNK1rQPtVHqWiXLSiFGaCHv12XEBdeOF9ANYr2GsBUuS2EsOZ2KC2iXU9t5EA0C%2BcP8ojsYLHWYLWvo%2Fy58HrYOYIpysN2A2lYMFcXmnJ6skwRvNerPffsn5dEU8wQ2GqjbBAp"}],"group":"cf-nel","max_age":604800}'
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=NKXAkuP5DaUxGV4IOVwVr%2BjzQ6kw59VemFjyhVWmkTB0MRZIxZlmRiqw4CwBN9taj94Gn7yRlbrtSDWJJVNOj2i4hPOn%2FNXb48PcMcK9S1PFnBmKvvV3mhLwKzVpv4vZ2qM%3D"}],"group":"cf-nel","max_age":604800}'
       Nel:
       - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
       Server:
       - cloudflare
       Cf-Ray:
-      - 761fa87a2a13df91-MEL
+      - 7854236b7fd3a94f-SYD
     body:
-      encoding: ASCII-8BIT
-      string: '{"data":{"createNotification":{"clientMutationId":null,"errors":null,"notification":{"id":"a214beff-eea5-41e9-bcde-290f3d523142"}}}}'
-  recorded_at: Sat, 29 Oct 2022 23:23:18 GMT
+      encoding: UTF-8
+      string: '{"notification":{"id":"4b5e07e0-6605-4b0c-82e9-8ed17caf1e36","title":"Welcome
+        to MagicBell","content":null,"action_url":null,"category":"","topic":null,"custom_attributes":null,"sent_at":1673004802}}'
+  recorded_at: Fri, 06 Jan 2023 11:33:23 GMT
 recorded_with: VCR 6.1.0

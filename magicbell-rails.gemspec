@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name        = 'magicbell-rails'
-  spec.version     = '0.1.0'
+  spec.version     = '0.2.0'
   spec.authors     = ['Grant Petersen-Speelman']
   spec.email       = ['grant@nexl.io']
   spec.homepage    = 'https://github.com/NEXL-LTS/nexl360/local_gems/magicbell-rails'
@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
     Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
   end
 
-  spec.add_dependency 'graphql-client', '>= 0.18.0'
+  spec.add_dependency 'magicbell', '>= 2.2.1'
   spec.add_dependency 'rails', '>= 7.0.4'
   spec.metadata['rubygems_mfa_required'] = 'true'
 end
