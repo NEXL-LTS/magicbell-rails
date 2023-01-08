@@ -4,7 +4,7 @@ module Magicbell
       has_many :recipients, dependent: :destroy
       has_many :results, dependent: :destroy
 
-      # validates :recipients, presence: true
+      validates :recipients, presence: true
 
       def self.bell(params)
         params = params.deep_symbolize_keys
@@ -27,6 +27,14 @@ module Magicbell
         attributes.except('id', 'created_at', 'updated_at')
                   .merge('recipients' => recipients.map(&:to_bell_hash))
                   .compact_blank
+      end
+
+      def recipient_emails
+        recipients.map(&:email)
+      end
+
+      def result
+        results.result
       end
     end
   end
