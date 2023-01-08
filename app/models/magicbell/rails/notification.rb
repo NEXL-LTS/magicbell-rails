@@ -34,7 +34,7 @@ module Magicbell
       end
 
       def result
-        results.result
+        results.map(&:result)
       end
     end
   end
