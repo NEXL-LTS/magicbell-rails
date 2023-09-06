@@ -51,6 +51,13 @@ module Magicbell
                   id: '1202983',
                   title: 'A title you can use in your templates'
                 }
+              },
+              overrides: {
+                channels: {
+                  mobile_push: {
+                    action_url: 'https://magicbell.com/docs'
+                  }
+                }
               }
             ).reload
           end
@@ -64,6 +71,7 @@ module Magicbell
               'action_url' => 'https://magicbell.com/docs',
               'custom_attributes' => { 'order' => { 'id' => '1202983',
                                                     'title' => 'A title you can use in your templates' } },
+              'overrides' => { 'channels' => { 'mobile_push' => { 'action_url' => 'https://magicbell.com/docs' } } }, # rubocop:disable Layout/LineLength
               'recipients' => [
                 { 'custom_attributes' => { 'age' => 30 }, 'email' => 'grant@example.io',
                   'external_id' => '123', 'first_name' => 'Grant', 'last_name' => 'Petersen-Speelman',
