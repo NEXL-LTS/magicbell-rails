@@ -41,6 +41,3 @@ RSpec/NoExpectationExample:
 
 RSpec/ExampleWording:
   Enabled: false
-
-RSpec/FactoryBot/ConsistentParenthesesStyle:
-  Enabled: false
