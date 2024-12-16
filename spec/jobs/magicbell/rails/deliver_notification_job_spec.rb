@@ -1,79 +1,127 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 module Magicbell
   module Rails
     RSpec.describe DeliverNotificationJob do
       let(:result_creator) { class_double(Result, create: true) }
+      let(:api_key) { 'test-api-key' }
+      let(:api_secret) { 'test-api-secret' }
+      let(:job) { described_class.new }
+      let(:base_notification_data) do
+        {
+          notification: {
+            'title' => 'value',
+            'recipients' => [{ 'email' => 'grant@nexl.io' }]
+          }
+        }
+      end
 
       before do
-        Rails.api_key = ENV.fetch('MAGICBELL_API_KEY', 'SET_YOUR_API_KEY')
-        Rails.api_secret = ENV.fetch('MAGICBELL_API_SECRET', 'SET_YOUR_API_SECRET')
+        allow(Magicbell::Rails).to receive_messages(
+          api_key: api_key,
+          api_secret: api_secret
+        )
       end
 
-      it 'works' do
-        notification = instance_double(Magicbell::Rails::Notification,
-                                       to_bell_hash: { 'title' => 'value',
-                                                       'recipients' => [{ 'email' => 'grant@nexl.io' }] })
+      def default_headers
+        {
+          'Accept' => 'application/json',
+          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Content-Type' => 'application/json',
+          'User-Agent' => 'Ruby',
+          'X-MAGICBELL-API-KEY' => api_key,
+          'X-MAGICBELL-API-SECRET' => api_secret
+        }
+      end
 
-        VCR.use_cassette('successful') do
-          subject.perform(notification, result_creator: result_creator)
+      def stub_magicbell_request(notification_data, status: 200, response_body: '{"id":"123"}')
+        stub_request(:post, 'https://api.magicbell.io/notifications')
+          .with(
+            body: notification_data.to_json,
+            headers: default_headers
+          )
+          .to_return(
+            status: status,
+            body: response_body,
+            headers: { 'Content-Type' => 'application/json' }
+          )
+      end
+
+      context 'when delivering notifications' do
+        let(:notification) do
+          instance_double(
+            Magicbell::Rails::Notification,
+            to_bell_hash: base_notification_data
+          )
         end
 
-        expect(result_creator).to have_received(:create).with(notification: notification,
-                                                              result: kind_of(Hash))
-      end
-
-      it 'works with custom_attributes' do
-        notification = instance_double(Magicbell::Rails::Notification,
-                                       to_bell_hash: { 'title' => 'value',
-                                                       'custom_attributes' => { 'example' => '1' },
-                                                       'recipients' => [{ 'email' => 'grant@nexl.io' }] })
-
-        VCR.use_cassette('successful_with_custom_attributes') do
-          subject.perform(notification, result_creator: result_creator)
+        it 'delivers notification successfully' do
+          stub_magicbell_request(base_notification_data)
+          job.perform(notification, result_creator: result_creator)
+          expect(result_creator).to have_received(:create)
+            .with(notification: notification, result: { 'id' => '123' })
         end
 
-        expect(result_creator).to have_received(:create).with(notification: notification,
-                                                              result: kind_of(Hash))
-      end
+        it 'handles custom attributes' do
+          notification_data = base_notification_data.deep_merge(
+            notification: { 'custom_attributes' => { 'example' => '1' } }
+          )
+          allow(notification).to receive(:to_bell_hash).and_return(notification_data)
 
-      it 'raises error if invalid attributes' do
-        notification = instance_double(Magicbell::Rails::Notification,
-                                       to_bell_hash: { 'title' => 'value',
-                                                       'custom_attributes' => 'NotAHash',
-                                                       'recipients' => [{ 'email' => 'grant@nexl.io' }] })
+          stub_magicbell_request(notification_data)
+          job.perform(notification, result_creator: result_creator)
+          expect(result_creator).to have_received(:create)
+            .with(notification: notification, result: { 'id' => '123' })
+        end
 
-        VCR.use_cassette('successful_with_invalid_custom_attributes') do
-          expect do
-            subject.perform(notification, result_creator: result_creator)
-          end.to raise_error(MagicBell::Client::HTTPError)
+        context 'when attributes are invalid' do
+          let(:invalid_notification_data) do
+            base_notification_data.deep_merge(
+              notification: { 'custom_attributes' => 'NotAHash' }
+            )
+          end
+
+          before do
+            allow(notification).to receive(:to_bell_hash).and_return(invalid_notification_data)
+            stub_magicbell_request(
+              invalid_notification_data,
+              status: 422,
+              response_body: '{"errors":["custom_attributes must be a hash"]}'
+            )
+          end
+
+          it 'raises an error' do
+            expect { job.perform(notification, result_creator: result_creator) }
+              .to raise_error(MagicBell::Client::HTTPError)
+          end
         end
       end
 
-      it 'skips when no api_secret' do
-        Rails.api_secret = ''
-
-        notification = instance_double(Magicbell::Rails::Notification)
-
-        subject.perform(notification, result_creator: result_creator)
-
-        expect(result_creator).not_to have_received(:create)
-      end
-
-      it 'raises error when secret invalid' do
-        Rails.api_secret = 'asdasdasd'
-
-        notification = instance_double(Magicbell::Rails::Notification,
-                                       to_bell_hash: { 'title' => 'value',
-                                                       'recipients' => [{ 'email' => 'grant@nexl.io' }] })
-
-        VCR.use_cassette('unsuccessful') do
-          expect do
-            subject.perform(notification, result_creator: result_creator)
-          end.to raise_error(MagicBell::Client::HTTPError)
+      context 'when API configuration is invalid' do
+        let(:notification) do
+          instance_double(
+            Magicbell::Rails::Notification,
+            to_bell_hash: base_notification_data
+          )
         end
 
-        expect(result_creator).not_to have_received(:create)
+        it 'skips delivery when api_secret is blank' do
+          allow(Magicbell::Rails).to receive(:api_secret).and_return('')
+          job.perform(notification, result_creator: result_creator)
+          expect(result_creator).not_to have_received(:create)
+        end
+
+        it 'raises error for invalid API secret' do
+          stub_magicbell_request(
+            base_notification_data,
+            status: 401,
+            response_body: '{"errors":["Invalid API secret"]}'
+          )
+          expect { job.perform(notification, result_creator: result_creator) }
+            .to raise_error(MagicBell::Client::HTTPError)
+        end
       end
     end
   end

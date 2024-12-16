@@ -1,29 +1,42 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
+require 'factory_bot_rails'
+
+return if defined?(RAILS_HELPER_LOADED)
+
+RAILS_HELPER_LOADED = true
+
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
-require_relative 'dummy/config/environment'
-# Prevent database truncation if the environment is production
-abort('The Rails environment is running in production mode!') if Rails.env.production?
-# Add additional requires below this line. Rails is not loaded until this point!
-
-# Requires supporting ruby files with custom matchers and macros, etc, in
-# spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
-# run as spec files by default. This means that files in spec/support that end
-# in _spec.rb will both be required and run as specs, causing the specs to be
-# run twice. It is recommended that you do not name files matching this glob to
-# end with _spec.rb. You can configure this pattern with the --pattern
-# option on the command line or in ~/.rspec, .rspec or `.rspec-local`.
-#
-# The following line is provided for convenience purposes. It has the downside
-# of increasing the boot-up time by auto-requiring all files in the support
-# directory. Alternatively, in the individual `*_spec.rb` files, manually
-# require only the support files necessary.
-#
-# Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |f| require f }
 
 ENGINE_ROOT = File.expand_path('..', __dir__)
 ENGINE_PATH = File.expand_path('../lib/magicbell/rails/engine', __dir__)
 APP_PATH = File.expand_path('../spec/dummy/config/application', __dir__)
+
+require_relative 'dummy/config/environment'
+# Prevent database truncation if the environment is production
+abort('The Rails environment is running in production mode!') if Rails.env.production?
+
+# Add additional requires below this line. Rails is not loaded until this point!
+require 'rspec/rails'
+require 'webmock/rspec'
+require 'shoulda/matchers'
+
+# Load all models first
+Dir[File.join(ENGINE_ROOT, 'app', 'models', '**', '*.rb')].each { |f| require f }
+
+# Then load factories and support files
+Dir[File.join(ENGINE_ROOT, 'spec', 'factories', '**', '*.rb')].each { |f| require f }
+Dir[File.join(ENGINE_ROOT, 'spec', 'support', '**', '*.rb')].each { |f| require f }
+
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
+end
+
+# Configure WebMock
+WebMock.disable_net_connect!(allow_localhost: true)
 
 ActiveRecord::Migrator.migrations_paths = [File.expand_path('../spec/dummy/db/migrate', __dir__)]
 ActiveRecord::Migrator.migrations_paths << File.expand_path('../db/migrate', __dir__)
@@ -33,14 +46,6 @@ begin
   ActiveRecord::Migration.maintain_test_schema!
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
-end
-
-require 'rspec/rails'
-require 'vcr'
-
-VCR.configure do |config|
-  config.cassette_library_dir = 'spec/vcr_cassettes'
-  config.hook_into :webmock
 end
 
 RSpec.configure do |config|

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Magicbell
   module Rails
     class Notification < ApplicationRecord
@@ -24,9 +26,11 @@ module Magicbell
       end
 
       def to_bell_hash
-        attributes.except('id', 'created_at', 'updated_at')
-                  .merge('recipients' => recipients.map(&:to_bell_hash))
-                  .compact_blank
+        {
+          'notification' => attributes.except('id', 'created_at', 'updated_at')
+                                      .merge('recipients' => recipients.map(&:to_bell_hash))
+                                      .compact_blank
+        }
       end
 
       def recipient_emails

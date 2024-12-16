@@ -22,5 +22,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'magicbell', '>= 2.2.1'
   spec.add_dependency 'rails', '>= 7.0.4'
+  spec.add_development_dependency 'factory_bot_rails'
+  spec.add_development_dependency 'shoulda-matchers'
   spec.metadata['rubygems_mfa_required'] = 'true'
 end

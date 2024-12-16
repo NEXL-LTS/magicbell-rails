@@ -1,4 +1,9 @@
-require 'magicbell/rails/engine' # rubocop:disable Naming/FileName
+# frozen_string_literal: true
+
+# rubocop:disable Naming/FileName
+require 'magicbell'
+require 'magicbell/rails/client'
+require 'magicbell/rails/engine'
 
 module Magicbell
   module Rails
@@ -11,5 +16,11 @@ module Magicbell
     def self.bell(args)
       Notification.bell(args)
     end
+
+    def self.notification_preferences(args)
+      NotificationPreference.notification_preferences(args)
+    end
   end
 end
+
+# rubocop:enable Naming/FileName
