@@ -62,41 +62,59 @@ module Magicbell
           }
         end
 
-        it 'creates and delivers notification' do
-          stub_magicbell_api(
-            endpoint: 'notifications',
-            method: :post,
-            body: notification_data,
-            response_body: '{"id":"123"}'
-          )
-
-          perform_enqueued_jobs do
-            described_class.bell(
-              title: 'Welcome to MagicBell',
-              recipients: [{ email: 'grant@nexl.io' }]
-            ).deliver_later
+        context 'when delivering notifications' do
+          before do
+            stub_magicbell_api(
+              endpoint: 'notifications',
+              method: :post,
+              body: notification_data,
+              response_body: '{"id":"123"}'
+            )
           end
 
-          expect(Notification.count).to eq(1)
-          expect(Result.count).to eq(1)
+          def deliver_notification
+            perform_enqueued_jobs do
+              described_class.bell(
+                title: 'Welcome to MagicBell',
+                recipients: [{ email: 'grant@nexl.io' }]
+              ).deliver_later
+            end
+          end
+
+          it 'creates notification record' do
+            deliver_notification
+            expect(Notification.count).to eq(1)
+          end
+
+          it 'creates result record' do
+            deliver_notification
+            expect(Result.count).to eq(1)
+          end
         end
 
-        it 'updates notification preferences' do
-          stub_magicbell_api(
-            endpoint: 'notification_preferences',
-            method: :put,
-            body: preferences_data,
-            headers: { 'X-Magicbell-User-External-Id' => 'user-123' }
-          )
-
-          perform_enqueued_jobs do
-            described_class.notification_preferences(
-              user_external_id: 'user-123',
-              categories: [{ slug: 'billing', channels: [{ slug: 'email', enabled: false }] }]
-            ).update_later
+        context 'when updating preferences' do
+          before do
+            stub_magicbell_api(
+              endpoint: 'notification_preferences',
+              method: :put,
+              body: preferences_data,
+              headers: { 'X-Magicbell-User-External-Id' => 'user-123' }
+            )
           end
 
-          verify_notification_preferences_created
+          def update_preferences
+            perform_enqueued_jobs do
+              described_class.notification_preferences(
+                user_external_id: 'user-123',
+                categories: [{ slug: 'billing', channels: [{ slug: 'email', enabled: false }] }]
+              ).update_later
+            end
+          end
+
+          it 'creates preference records' do
+            update_preferences
+            verify_notification_preferences_created
+          end
         end
 
         def verify_notification_preferences_created
