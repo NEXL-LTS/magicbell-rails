@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rails_helper' # rubocop:disable Naming/FileName
+require 'rails_helper'
 
 module Magicbell
   module Rails

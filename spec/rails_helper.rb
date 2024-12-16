@@ -2,6 +2,7 @@
 require 'factory_bot_rails'
 
 return if defined?(RAILS_HELPER_LOADED)
+
 RAILS_HELPER_LOADED = true
 
 require 'spec_helper'
