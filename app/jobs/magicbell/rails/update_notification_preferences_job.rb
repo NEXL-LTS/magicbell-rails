@@ -25,7 +25,7 @@ module Magicbell
             'X-MAGICBELL-USER-EXTERNAL-ID' => notification_preference.user_external_id,
             'X-MAGICBELL-USER-HMAC' => notification_preference.user_hmac
           }.compact,
-          body: notification_preference.to_bell_hash
+          body: notification_preference.to_bell_hash.to_json
         )
       end
     end

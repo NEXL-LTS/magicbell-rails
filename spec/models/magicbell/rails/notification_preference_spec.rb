@@ -114,7 +114,7 @@ module Magicbell
 
           stub_request(:put, "https://api.magicbell.com/notification_preferences")
             .with(
-              body: preference.to_bell_hash,
+              body: preference.to_bell_hash.to_json,
               headers: {
                 'Accept' => 'application/json',
                 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
