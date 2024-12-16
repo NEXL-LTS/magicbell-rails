@@ -21,16 +21,11 @@ module Magicbell
           'Content-Type' => 'application/json',
           'User-Agent' => 'Ruby',
           'X-Magicbell-Api-Key' => Rails.api_key,
-          'X-Magicbell-Api-Secret' => Rails.api_secret
+          'X-Magicbell-Api-Secret' => Rails.api_secret,
+          'X-Magicbell-User-External-Id' => notification_preference.user_external_id
         }
 
-        if notification_preference.user_external_id.present?
-          headers['X-Magicbell-User-External-Id'] = notification_preference.user_external_id
-        end
-
-        if notification_preference.user_hmac.present?
-          headers['X-Magicbell-User-Hmac'] = notification_preference.user_hmac
-        end
+        headers['X-Magicbell-User-Hmac'] = notification_preference.user_hmac if notification_preference.user_hmac.present?
 
         magicbell.put(
           'https://api.magicbell.com/notification_preferences',
