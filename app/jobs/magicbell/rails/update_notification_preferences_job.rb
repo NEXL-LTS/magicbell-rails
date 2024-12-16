@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+require 'magicbell'
+
 module Magicbell
   module Rails
     class UpdateNotificationPreferencesJob < ApplicationJob
