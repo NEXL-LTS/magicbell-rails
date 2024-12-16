@@ -165,11 +165,13 @@ module Magicbell
               }.to_json,
               headers: {
                 'Accept' => 'application/json',
+                'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
                 'Content-Type' => 'application/json',
-                'X-MAGICBELL-API-KEY' => api_key,
-                'X-MAGICBELL-API-SECRET' => api_secret,
-                'X-MAGICBELL-USER-EXTERNAL-ID' => user_external_id,
-                'X-MAGICBELL-USER-HMAC' => user_hmac
+                'User-Agent' => 'Ruby',
+                'X-Magicbell-Api-Key' => api_key,
+                'X-Magicbell-Api-Secret' => api_secret,
+                'X-Magicbell-User-External-Id' => user_external_id,
+                'X-Magicbell-User-Hmac' => user_hmac
               }
             )
             .to_return(status: 200, body: '{}', headers: { 'Content-Type' => 'application/json' })

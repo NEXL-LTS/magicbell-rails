@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+require 'magicbell'
+
 module Magicbell
   module Rails
     class NotificationPreference < ApplicationRecord
@@ -30,7 +34,35 @@ module Magicbell
       end
 
       def update_now
-        UpdateNotificationPreferencesJob.perform_now(self)
+        return if ::Magicbell::Rails.api_secret.blank?
+
+        magicbell = MagicBell::Client.new(
+          api_key: ::Magicbell::Rails.api_key,
+          api_secret: ::Magicbell::Rails.api_secret
+        )
+
+        headers = {
+          'Accept' => 'application/json',
+          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Content-Type' => 'application/json',
+          'User-Agent' => 'Ruby',
+          'X-Magicbell-Api-Key' => ::Magicbell::Rails.api_key,
+          'X-Magicbell-Api-Secret' => ::Magicbell::Rails.api_secret
+        }
+
+        if user_external_id.present?
+          headers['X-Magicbell-User-External-Id'] = user_external_id
+        end
+
+        if user_hmac.present?
+          headers['X-Magicbell-User-Hmac'] = user_hmac
+        end
+
+        magicbell.put(
+          'https://api.magicbell.com/notification_preferences',
+          body: to_bell_hash.to_json,
+          headers: headers
+        )
       end
 
       def to_bell_hash

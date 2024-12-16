@@ -30,8 +30,8 @@ module Magicbell
                 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
                 'Content-Type' => 'application/json',
                 'User-Agent' => 'Ruby',
-                'X-MAGICBELL-API-KEY' => api_key,
-                'X-MAGICBELL-API-SECRET' => api_secret
+                'X-Magicbell-Api-Key' => api_key,
+                'X-Magicbell-Api-Secret' => api_secret
               }
             )
             .to_return(status: 200, body: '{"id":"123"}', headers: { 'Content-Type' => 'application/json' })
@@ -70,9 +70,9 @@ module Magicbell
                 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
                 'Content-Type' => 'application/json',
                 'User-Agent' => 'Ruby',
-                'X-MAGICBELL-API-KEY' => api_key,
-                'X-MAGICBELL-API-SECRET' => api_secret,
-                'X-MAGICBELL-USER-EXTERNAL-ID' => 'user-123'
+                'X-Magicbell-Api-Key' => api_key,
+                'X-Magicbell-Api-Secret' => api_secret,
+                'X-Magicbell-User-External-Id' => 'user-123'
               }
             )
             .to_return(status: 200, body: '{}', headers: { 'Content-Type' => 'application/json' })
