@@ -1,6 +1,6 @@
 # frozen_string_literal: true
-# rubocop:disable Naming/FileName
 
+# rubocop:disable Naming/FileName
 require 'magicbell'
 require 'magicbell/rails/client'
 require 'magicbell/rails/engine'
@@ -22,3 +22,5 @@ module Magicbell
     end
   end
 end
+
+# rubocop:enable Naming/FileName
