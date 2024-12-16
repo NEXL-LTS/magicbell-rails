@@ -38,14 +38,14 @@ module Magicbell
         }
       end
 
-      private
-
       def update_categories(categories_params)
         categories_params.each do |category_params|
           category = categories.find_or_initialize_by(slug: category_params[:slug])
           update_channels(category, category_params[:channels])
         end
       end
+
+      private
 
       def update_channels(category, channels_params)
         channels_params.each do |channel_params|
