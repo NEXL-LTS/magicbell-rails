@@ -75,7 +75,7 @@ module Magicbell
             )
           end
 
-          it 'includes custom attributes and overrides' do
+          it 'includes custom attributes' do
             notification_hash = @notification.to_bell_hash
             expect(notification_hash['notification']).to include(
               'custom_attributes' => {
@@ -83,7 +83,13 @@ module Magicbell
                   'id' => '1202983',
                   'title' => 'A title you can use in your templates'
                 }
-              },
+              }
+            )
+          end
+
+          it 'includes channel overrides' do
+            notification_hash = @notification.to_bell_hash
+            expect(notification_hash['notification']).to include(
               'overrides' => {
                 'channels' => {
                   'mobile_push' => {
