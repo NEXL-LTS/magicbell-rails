@@ -18,7 +18,10 @@ module Magicbell
         magicbell.put(
           'https://api.magicbell.com/notification_preferences',
           headers: {
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
             'X-MAGICBELL-API-KEY' => Rails.api_key,
+            'X-MAGICBELL-API-SECRET' => Rails.api_secret,
             'X-MAGICBELL-USER-EXTERNAL-ID' => notification_preference.user_external_id,
             'X-MAGICBELL-USER-HMAC' => notification_preference.user_hmac
           }.compact,

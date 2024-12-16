@@ -6,6 +6,8 @@ module Magicbell
   module Rails
     RSpec.describe NotificationPreference do
       describe 'validations' do
+        subject { create(:notification_preference) }
+
         it { is_expected.to validate_presence_of(:user_external_id) }
         it { is_expected.to validate_uniqueness_of(:user_external_id) }
       end
@@ -88,6 +90,51 @@ module Magicbell
               ]
             }
           )
+        end
+      end
+
+      describe '#update_later' do
+        let(:preference) { create(:notification_preference) }
+
+        it 'enqueues an update job' do
+          expect {
+            preference.update_later
+          }.to have_enqueued_job(UpdateNotificationPreferencesJob)
+        end
+      end
+
+      describe '#update_now' do
+        let(:preference) { create(:notification_preference) }
+        let(:api_key) { 'test-api-key' }
+        let(:api_secret) { 'test-api-secret' }
+
+        before do
+          allow(Magicbell::Rails).to receive(:api_key).and_return(api_key)
+          allow(Magicbell::Rails).to receive(:api_secret).and_return(api_secret)
+
+          stub_request(:put, "https://api.magicbell.com/notification_preferences")
+            .with(
+              body: preference.to_bell_hash,
+              headers: {
+                'Accept' => 'application/json',
+                'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+                'Content-Type' => 'application/json',
+                'User-Agent' => 'Ruby',
+                'X-MAGICBELL-API-KEY' => api_key,
+                'X-MAGICBELL-API-SECRET' => api_secret,
+                'X-MAGICBELL-USER-EXTERNAL-ID' => preference.user_external_id,
+                'X-MAGICBELL-USER-HMAC' => preference.user_hmac
+              }.compact
+            )
+            .to_return(status: 200, body: '{}', headers: { 'Content-Type' => 'application/json' })
+        end
+
+        it 'updates preferences immediately' do
+          expect {
+            preference.update_now
+          }.not_to have_enqueued_job(UpdateNotificationPreferencesJob)
+
+          expect(WebMock).to have_requested(:put, "https://api.magicbell.com/notification_preferences")
         end
       end
     end
