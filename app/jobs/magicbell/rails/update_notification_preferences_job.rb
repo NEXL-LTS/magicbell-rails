@@ -15,6 +15,7 @@ module Magicbell
           api_secret: Rails.api_secret
         )
 
+        # Build base headers that are always required
         headers = {
           'Accept' => 'application/json',
           'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
@@ -25,7 +26,8 @@ module Magicbell
           'X-Magicbell-User-External-Id' => notification_preference.user_external_id
         }
 
-        headers['X-Magicbell-User-Hmac'] = notification_preference.user_hmac if notification_preference.user_hmac.present?
+        # Add HMAC header only if it's not nil
+        headers['X-Magicbell-User-Hmac'] = notification_preference.user_hmac if notification_preference.user_hmac
 
         magicbell.put(
           'https://api.magicbell.com/notification_preferences',

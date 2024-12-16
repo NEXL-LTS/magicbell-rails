@@ -51,7 +51,7 @@ module Magicbell
           'X-Magicbell-User-External-Id' => user_external_id
         }
 
-        headers['X-Magicbell-User-Hmac'] = user_hmac if user_hmac.present?
+        headers['X-Magicbell-User-Hmac'] = user_hmac if user_hmac
 
         magicbell.put(
           'https://api.magicbell.com/notification_preferences',
