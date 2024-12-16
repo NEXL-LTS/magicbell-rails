@@ -21,6 +21,13 @@ require 'vcr'
 require 'webmock/rspec'
 require 'shoulda/matchers'
 
+# Load all models first
+Dir[File.join(ENGINE_ROOT, 'app', 'models', '**', '*.rb')].sort.each { |f| require f }
+
+# Then load factories and support files
+Dir[File.join(ENGINE_ROOT, 'spec', 'factories', '**', '*.rb')].sort.each { |f| require f }
+Dir[File.join(ENGINE_ROOT, 'spec', 'support', '**', '*.rb')].sort.each { |f| require f }
+
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
     with.test_framework :rspec
@@ -32,10 +39,6 @@ VCR.configure do |config|
   config.cassette_library_dir = 'spec/vcr_cassettes'
   config.hook_into :webmock
 end
-
-# Requires supporting ruby files with custom matchers and macros, etc, in
-# spec/support/ and its subdirectories.
-Dir[File.join(ENGINE_ROOT, 'spec', 'support', '**', '*.rb')].sort.each { |f| require f }
 
 ActiveRecord::Migrator.migrations_paths = [File.expand_path('../spec/dummy/db/migrate', __dir__)]
 ActiveRecord::Migrator.migrations_paths << File.expand_path('../db/migrate', __dir__)
