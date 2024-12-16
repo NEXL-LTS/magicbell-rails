@@ -17,7 +17,7 @@ module Magicbell
       end
 
       it 'sends the correct request to MagicBell API' do
-        stub_request(:put, 'https://api.magicbell.com/notification_preferences')
+        stub_request(:put, 'https://api.magicbell.io/notification_preferences')
           .with(
             body: notification_preference.to_bell_hash.to_json,
             headers: {
@@ -49,7 +49,7 @@ module Magicbell
         let(:notification_preference) { create(:notification_preference, user_hmac: nil) }
 
         it 'sends the request without the HMAC header' do
-          stub_request(:put, 'https://api.magicbell.com/notification_preferences')
+          stub_request(:put, 'https://api.magicbell.io/notification_preferences')
             .with(
               body: notification_preference.to_bell_hash.to_json,
               headers: {

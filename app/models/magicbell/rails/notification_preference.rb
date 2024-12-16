@@ -27,7 +27,7 @@ module Magicbell
         return if ::Magicbell::Rails.api_secret.blank?
 
         client = build_magicbell_client
-        client.put('https://api.magicbell.com/notification_preferences', body: to_bell_hash.to_json)
+        client.put('https://api.magicbell.io/notification_preferences', body: to_bell_hash.to_json)
       end
 
       def to_bell_hash

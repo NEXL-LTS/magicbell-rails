@@ -146,7 +146,7 @@ module Magicbell
           allow(Magicbell::Rails).to receive(:api_key).and_return(api_key)
           allow(Magicbell::Rails).to receive(:api_secret).and_return(api_secret)
 
-          stub_request(:put, 'https://api.magicbell.com/notification_preferences')
+          stub_request(:put, 'https://api.magicbell.io/notification_preferences')
             .with(
               body: {
                 notification_preferences: {
@@ -188,7 +188,7 @@ module Magicbell
             preference.update_now
           }.not_to have_enqueued_job(UpdateNotificationPreferencesJob)
 
-          expect(WebMock).to have_requested(:put, 'https://api.magicbell.com/notification_preferences')
+          expect(WebMock).to have_requested(:put, 'https://api.magicbell.io/notification_preferences')
         end
       end
     end

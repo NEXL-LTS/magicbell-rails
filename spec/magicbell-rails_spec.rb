@@ -48,7 +48,7 @@ module Magicbell
         end
 
         it 'updates notification preferences' do
-          stub_request(:put, 'https://api.magicbell.com/notification_preferences')
+          stub_request(:put, 'https://api.magicbell.io/notification_preferences')
             .with(
               body: {
                 'notification_preferences' => {
