@@ -13,20 +13,13 @@ module Magicbell
 
         magicbell = Magicbell::Rails::Client.new(
           api_key: Rails.api_key,
-          api_secret: Rails.api_secret
+          api_secret: Rails.api_secret,
+          user_external_id: notification_preference.user_external_id,
+          user_hmac: notification_preference.user_hmac
         )
 
-        # Build user-specific headers only
-        headers = {
-          'X-MAGICBELL-USER-EXTERNAL-ID' => notification_preference.user_external_id
-        }
-
-        # Add HMAC header only if it's present
-        headers['X-MAGICBELL-USER-HMAC'] = notification_preference.user_hmac if notification_preference.user_hmac.present?
-
         options = {
-          body: notification_preference.to_bell_hash.to_json,
-          headers: headers
+          body: notification_preference.to_bell_hash.to_json
         }
 
         magicbell.put(

@@ -39,20 +39,13 @@ module Magicbell
 
         magicbell = ::Magicbell::Rails::Client.new(
           api_key: ::Magicbell::Rails.api_key,
-          api_secret: ::Magicbell::Rails.api_secret
+          api_secret: ::Magicbell::Rails.api_secret,
+          user_external_id: user_external_id,
+          user_hmac: user_hmac
         )
 
-        # Build user-specific headers only
-        headers = {
-          'X-MAGICBELL-USER-EXTERNAL-ID' => user_external_id
-        }
-
-        # Add HMAC header only if it's present
-        headers['X-MAGICBELL-USER-HMAC'] = user_hmac if user_hmac.present?
-
         options = {
-          body: to_bell_hash.to_json,
-          headers: headers
+          body: to_bell_hash.to_json
         }
 
         magicbell.put(
