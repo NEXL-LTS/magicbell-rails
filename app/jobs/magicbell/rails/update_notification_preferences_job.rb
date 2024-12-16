@@ -16,10 +16,8 @@ module Magicbell
           api_secret: Rails.api_secret
         )
 
-        # Build authentication and user-specific headers
+        # Build user-specific headers only
         headers = {
-          'X-MAGICBELL-API-KEY' => Rails.api_key,
-          'X-MAGICBELL-API-SECRET' => Rails.api_secret,
           'X-MAGICBELL-USER-EXTERNAL-ID' => notification_preference.user_external_id
         }
 
