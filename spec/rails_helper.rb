@@ -1,4 +1,7 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
+return if defined?(RAILS_HELPER_LOADED)
+RAILS_HELPER_LOADED = true
+
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
 
