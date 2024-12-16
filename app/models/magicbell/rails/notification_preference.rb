@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'magicbell'
+require_relative '../../../lib/magicbell/rails/client'
 
 module Magicbell
   module Rails
@@ -36,12 +37,12 @@ module Magicbell
       def update_now
         return if ::Magicbell::Rails.api_secret.blank?
 
-        magicbell = MagicBell::Client.new(
+        magicbell = ::Magicbell::Rails::Client.new(
           api_key: ::Magicbell::Rails.api_key,
           api_secret: ::Magicbell::Rails.api_secret
         )
 
-        # Build base headers that are always required
+        # Build complete options hash with all required headers
         headers = {
           'Accept' => 'application/json',
           'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
@@ -55,10 +56,14 @@ module Magicbell
         # Add HMAC header only if it's present
         headers['X-MAGICBELL-USER-HMAC'] = user_hmac if user_hmac.present?
 
-        magicbell.put(
-          'https://api.magicbell.com/notification_preferences',
+        options = {
           body: to_bell_hash.to_json,
           headers: headers
+        }
+
+        magicbell.put(
+          'https://api.magicbell.com/notification_preferences',
+          options
         )
       end
 
