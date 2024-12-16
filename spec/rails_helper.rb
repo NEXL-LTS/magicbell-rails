@@ -19,7 +19,8 @@ abort('The Rails environment is running in production mode!') if Rails.env.produ
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
 #
-# Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |f| require f }
+Dir[File.join(ENGINE_ROOT, 'spec', 'support', '**', '*.rb')].sort.each { |f| require f }
+Dir[File.join(ENGINE_ROOT, 'spec', 'factories', '**', '*.rb')].sort.each { |f| require f }
 
 ENGINE_ROOT = File.expand_path('..', __dir__)
 ENGINE_PATH = File.expand_path('../lib/magicbell/rails/engine', __dir__)
@@ -37,6 +38,15 @@ end
 
 require 'rspec/rails'
 require 'vcr'
+require 'webmock/rspec'
+require 'shoulda/matchers'
+
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
+end
 
 VCR.configure do |config|
   config.cassette_library_dir = 'spec/vcr_cassettes'
@@ -44,6 +54,8 @@ VCR.configure do |config|
 end
 
 RSpec.configure do |config|
+  config.include FactoryBot::Syntax::Methods
+
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
