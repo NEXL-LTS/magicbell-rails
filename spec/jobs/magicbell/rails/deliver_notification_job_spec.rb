@@ -8,6 +8,7 @@ module Magicbell
       let(:result_creator) { class_double(Result, create: true) }
       let(:api_key) { 'test-api-key' }
       let(:api_secret) { 'test-api-secret' }
+      let(:job) { described_class.new }
       let(:base_notification_data) do
         {
           notification: {
@@ -48,20 +49,20 @@ module Magicbell
           )
       end
 
-      it 'works' do
+      it 'delivers notification successfully' do
         notification = instance_double(
           Magicbell::Rails::Notification,
           to_bell_hash: base_notification_data
         )
 
         stub_magicbell_request(base_notification_data)
-        subject.perform(notification, result_creator: result_creator)
+        job.perform(notification, result_creator: result_creator)
 
         expect(result_creator).to have_received(:create)
           .with(notification: notification, result: { 'id' => '123' })
       end
 
-      it 'works with custom_attributes' do
+      it 'handles custom attributes correctly' do
         notification_data = base_notification_data.deep_merge(
           notification: { 'custom_attributes' => { 'example' => '1' } }
         )
@@ -71,13 +72,13 @@ module Magicbell
         )
 
         stub_magicbell_request(notification_data)
-        subject.perform(notification, result_creator: result_creator)
+        job.perform(notification, result_creator: result_creator)
 
         expect(result_creator).to have_received(:create)
           .with(notification: notification, result: { 'id' => '123' })
       end
 
-      it 'raises error if invalid attributes' do
+      it 'raises error for invalid attributes' do
         notification_data = base_notification_data.deep_merge(
           notification: { 'custom_attributes' => 'NotAHash' }
         )
@@ -92,20 +93,20 @@ module Magicbell
           response_body: '{"errors":["custom_attributes must be a hash"]}'
         )
 
-        expect { subject.perform(notification, result_creator: result_creator) }
+        expect { job.perform(notification, result_creator: result_creator) }
           .to raise_error(MagicBell::Client::HTTPError)
       end
 
-      it 'skips when no api_secret' do
+      it 'skips delivery when api_secret is blank' do
         allow(Magicbell::Rails).to receive(:api_secret).and_return('')
         notification = instance_double(Magicbell::Rails::Notification)
 
-        subject.perform(notification, result_creator: result_creator)
+        job.perform(notification, result_creator: result_creator)
 
         expect(result_creator).not_to have_received(:create)
       end
 
-      it 'raises error when secret invalid' do
+      it 'handles invalid API secret error' do
         notification = instance_double(
           Magicbell::Rails::Notification,
           to_bell_hash: base_notification_data
@@ -117,9 +118,8 @@ module Magicbell
           response_body: '{"errors":["Invalid API secret"]}'
         )
 
-        expect { subject.perform(notification, result_creator: result_creator) }
+        expect { job.perform(notification, result_creator: result_creator) }
           .to raise_error(MagicBell::Client::HTTPError)
-
         expect(result_creator).not_to have_received(:create)
       end
     end

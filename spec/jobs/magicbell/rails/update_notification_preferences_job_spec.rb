@@ -7,7 +7,7 @@ module Magicbell
     RSpec.describe UpdateNotificationPreferencesJob do
       let(:notification_preference) { create(:notification_preference) }
       let(:category) { create(:preference_category, notification_preference: notification_preference) }
-      let!(:channel) { create(:preference_channel, preference_category: category) }
+      let(:channel) { create(:preference_channel, preference_category: category) }
       let(:api_key) { 'test-api-key' }
       let(:api_secret) { 'test-api-secret' }
 
@@ -16,6 +16,7 @@ module Magicbell
           api_key: api_key,
           api_secret: api_secret
         )
+        channel # ensure channel is created
       end
 
       def default_headers(additional_headers = {})
@@ -35,7 +36,7 @@ module Magicbell
           .to_return(status: 200, body: '{}', headers: { 'Content-Type' => 'application/json' })
       end
 
-      it 'sends the correct request to MagicBell API' do
+      it 'sends preferences update request' do
         stub_preferences_request(
           body: notification_preference.to_bell_hash,
           headers: {
@@ -45,21 +46,28 @@ module Magicbell
         )
 
         described_class.perform_now(notification_preference)
+
+        expect(WebMock).to have_requested(:put, 'https://api.magicbell.io/notification_preferences')
       end
 
       context 'when api_secret is blank' do
         before { allow(Magicbell::Rails).to receive(:api_secret).and_return(nil) }
 
-        it 'does not make an API request' do
-          expect_any_instance_of(MagicBell::Client).not_to receive(:put)
+        it 'skips API request' do
+          client = instance_double(MagicBell::Client)
+          allow(MagicBell::Client).to receive(:new).and_return(client)
+          allow(client).to receive(:put)
+
           described_class.perform_now(notification_preference)
+
+          expect(client).not_to have_received(:put)
         end
       end
 
       context 'when user_hmac is nil' do
         let(:notification_preference) { create(:notification_preference, user_hmac: nil) }
 
-        it 'sends the request without the HMAC header' do
+        it 'sends request without HMAC header' do
           stub_preferences_request(
             body: notification_preference.to_bell_hash,
             headers: {
@@ -68,6 +76,8 @@ module Magicbell
           )
 
           described_class.perform_now(notification_preference)
+
+          expect(WebMock).to have_requested(:put, 'https://api.magicbell.io/notification_preferences')
         end
       end
     end
