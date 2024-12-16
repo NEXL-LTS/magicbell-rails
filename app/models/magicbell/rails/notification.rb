@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Magicbell
   module Rails
     class Notification < ApplicationRecord
