@@ -18,19 +18,20 @@ module Magicbell
       end
 
       describe 'end to end test' do
+        def default_headers(additional_headers = {})
+          {
+            'Accept' => 'application/json',
+            'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+            'Content-Type' => 'application/json',
+            'User-Agent' => 'Ruby',
+            'X-Magicbell-Api-Key' => api_key,
+            'X-Magicbell-Api-Secret' => api_secret
+          }.merge(additional_headers)
+        end
+
         def stub_magicbell_api(endpoint:, method:, body:, response_body: '{}', headers: {})
           stub_request(method, "https://api.magicbell.io/#{endpoint}")
-            .with(
-              body: body.to_json,
-              headers: {
-                'Accept' => 'application/json',
-                'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-                'Content-Type' => 'application/json',
-                'User-Agent' => 'Ruby',
-                'X-Magicbell-Api-Key' => api_key,
-                'X-Magicbell-Api-Secret' => api_secret
-              }.merge(headers)
-            )
+            .with(body: body.to_json, headers: default_headers(headers))
             .to_return(status: 200, body: response_body, headers: { 'Content-Type' => 'application/json' })
         end
 
@@ -91,15 +92,14 @@ module Magicbell
           perform_enqueued_jobs do
             described_class.notification_preferences(
               user_external_id: 'user-123',
-              categories: [
-                {
-                  slug: 'billing',
-                  channels: [{ slug: 'email', enabled: false }]
-                }
-              ]
+              categories: [{ slug: 'billing', channels: [{ slug: 'email', enabled: false }] }]
             ).update_later
           end
 
+          verify_notification_preferences_created
+        end
+
+        def verify_notification_preferences_created
           expect(NotificationPreference.count).to eq(1)
           preference = NotificationPreference.last
           expect(preference.categories.count).to eq(1)

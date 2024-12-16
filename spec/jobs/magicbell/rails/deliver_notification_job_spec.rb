@@ -24,18 +24,22 @@ module Magicbell
         )
       end
 
+      def default_headers
+        {
+          'Accept' => 'application/json',
+          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Content-Type' => 'application/json',
+          'User-Agent' => 'Ruby',
+          'X-MAGICBELL-API-KEY' => api_key,
+          'X-MAGICBELL-API-SECRET' => api_secret
+        }
+      end
+
       def stub_magicbell_request(notification_data, status: 200, response_body: '{"id":"123"}')
         stub_request(:post, 'https://api.magicbell.io/notifications')
           .with(
             body: notification_data.to_json,
-            headers: {
-              'Accept' => 'application/json',
-              'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-              'Content-Type' => 'application/json',
-              'User-Agent' => 'Ruby',
-              'X-MAGICBELL-API-KEY' => api_key,
-              'X-MAGICBELL-API-SECRET' => api_secret
-            }
+            headers: default_headers
           )
           .to_return(
             status: status,

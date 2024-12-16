@@ -18,19 +18,20 @@ module Magicbell
         )
       end
 
+      def default_headers(additional_headers = {})
+        {
+          'Accept' => 'application/json',
+          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Content-Type' => 'application/json',
+          'User-Agent' => 'Ruby',
+          'X-Magicbell-Api-Key' => api_key,
+          'X-Magicbell-Api-Secret' => api_secret
+        }.merge(additional_headers)
+      end
+
       def stub_preferences_request(body:, headers: {})
         stub_request(:put, 'https://api.magicbell.io/notification_preferences')
-          .with(
-            body: body.to_json,
-            headers: {
-              'Accept' => 'application/json',
-              'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-              'Content-Type' => 'application/json',
-              'User-Agent' => 'Ruby',
-              'X-Magicbell-Api-Key' => api_key,
-              'X-Magicbell-Api-Secret' => api_secret
-            }.merge(headers)
-          )
+          .with(body: body.to_json, headers: default_headers(headers))
           .to_return(status: 200, body: '{}', headers: { 'Content-Type' => 'application/json' })
       end
 

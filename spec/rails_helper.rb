@@ -21,11 +21,11 @@ require 'webmock/rspec'
 require 'shoulda/matchers'
 
 # Load all models first
-Dir[File.join(ENGINE_ROOT, 'app', 'models', '**', '*.rb')].sort.each { |f| require f }
+Dir[File.join(ENGINE_ROOT, 'app', 'models', '**', '*.rb')].each { |f| require f }
 
 # Then load factories and support files
-Dir[File.join(ENGINE_ROOT, 'spec', 'factories', '**', '*.rb')].sort.each { |f| require f }
-Dir[File.join(ENGINE_ROOT, 'spec', 'support', '**', '*.rb')].sort.each { |f| require f }
+Dir[File.join(ENGINE_ROOT, 'spec', 'factories', '**', '*.rb')].each { |f| require f }
+Dir[File.join(ENGINE_ROOT, 'spec', 'support', '**', '*.rb')].each { |f| require f }
 
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
