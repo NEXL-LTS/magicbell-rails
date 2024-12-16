@@ -1,6 +1,11 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
+
+ENGINE_ROOT = File.expand_path('..', __dir__)
+ENGINE_PATH = File.expand_path('../lib/magicbell/rails/engine', __dir__)
+APP_PATH = File.expand_path('../spec/dummy/config/application', __dir__)
+
 require_relative 'dummy/config/environment'
 # Prevent database truncation if the environment is production
 abort('The Rails environment is running in production mode!') if Rails.env.production?
@@ -21,10 +26,6 @@ abort('The Rails environment is running in production mode!') if Rails.env.produ
 #
 Dir[File.join(ENGINE_ROOT, 'spec', 'support', '**', '*.rb')].sort.each { |f| require f }
 Dir[File.join(ENGINE_ROOT, 'spec', 'factories', '**', '*.rb')].sort.each { |f| require f }
-
-ENGINE_ROOT = File.expand_path('..', __dir__)
-ENGINE_PATH = File.expand_path('../lib/magicbell/rails/engine', __dir__)
-APP_PATH = File.expand_path('../spec/dummy/config/application', __dir__)
 
 ActiveRecord::Migrator.migrations_paths = [File.expand_path('../spec/dummy/db/migrate', __dir__)]
 ActiveRecord::Migrator.migrations_paths << File.expand_path('../db/migrate', __dir__)
