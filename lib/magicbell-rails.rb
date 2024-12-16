@@ -11,5 +11,9 @@ module Magicbell
     def self.bell(args)
       Notification.bell(args)
     end
+
+    def self.notification_preferences(args)
+      NotificationPreference.notification_preferences(args)
+    end
   end
 end
