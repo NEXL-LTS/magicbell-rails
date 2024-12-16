@@ -28,8 +28,8 @@ module Magicbell
       def to_bell_hash
         {
           'notification' => attributes.except('id', 'created_at', 'updated_at')
-                                   .merge('recipients' => recipients.map(&:to_bell_hash))
-                                   .compact_blank
+                                      .merge('recipients' => recipients.map(&:to_bell_hash))
+                                      .compact_blank
         }
       end
 
