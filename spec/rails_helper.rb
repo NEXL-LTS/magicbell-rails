@@ -17,7 +17,6 @@ abort('The Rails environment is running in production mode!') if Rails.env.produ
 
 # Add additional requires below this line. Rails is not loaded until this point!
 require 'rspec/rails'
-require 'vcr'
 require 'webmock/rspec'
 require 'shoulda/matchers'
 
@@ -35,10 +34,8 @@ Shoulda::Matchers.configure do |config|
   end
 end
 
-VCR.configure do |config|
-  config.cassette_library_dir = 'spec/vcr_cassettes'
-  config.hook_into :webmock
-end
+# Configure WebMock
+WebMock.disable_net_connect!(allow_localhost: true)
 
 ActiveRecord::Migrator.migrations_paths = [File.expand_path('../spec/dummy/db/migrate', __dir__)]
 ActiveRecord::Migrator.migrations_paths << File.expand_path('../db/migrate', __dir__)

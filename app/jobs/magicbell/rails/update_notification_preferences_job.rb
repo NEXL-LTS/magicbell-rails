@@ -16,7 +16,7 @@ module Magicbell
         )
 
         magicbell.put(
-          '/notification_preferences',
+          'https://api.magicbell.com/notification_preferences',
           headers: {
             'X-MAGICBELL-API-KEY' => Rails.api_key,
             'X-MAGICBELL-USER-EXTERNAL-ID' => notification_preference.user_external_id,
