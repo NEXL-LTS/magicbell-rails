@@ -28,6 +28,54 @@ module Magicbell
           expect(Notification.count).to eq(1)
           expect(Result.count).to eq(1)
         end
+
+        it 'updates notification preferences' do
+          stub_request(:put, 'https://api.magicbell.com/notification_preferences')
+            .with(
+              headers: {
+                'X-MAGICBELL-API-KEY' => described_class.api_key,
+                'X-MAGICBELL-USER-EXTERNAL-ID' => 'user-123'
+              },
+              body: {
+                notification_preferences: {
+                  categories: [
+                    {
+                      slug: 'billing',
+                      channels: [
+                        {
+                          slug: 'email',
+                          enabled: false
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            )
+            .to_return(status: 200, body: '{}')
+
+          perform_enqueued_jobs do
+            described_class.notification_preferences(
+              user_external_id: 'user-123',
+              categories: [
+                {
+                  slug: 'billing',
+                  channels: [
+                    {
+                      slug: 'email',
+                      enabled: false
+                    }
+                  ]
+                }
+              ]
+            ).update_later
+          end
+
+          expect(NotificationPreference.count).to eq(1)
+          preference = NotificationPreference.last
+          expect(preference.categories.count).to eq(1)
+          expect(preference.categories.first.channels.count).to eq(1)
+        end
       end
     end
   end
