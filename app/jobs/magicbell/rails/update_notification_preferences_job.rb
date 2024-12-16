@@ -21,13 +21,13 @@ module Magicbell
           'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
           'Content-Type' => 'application/json',
           'User-Agent' => 'Ruby',
-          'X-Magicbell-Api-Key' => Rails.api_key,
-          'X-Magicbell-Api-Secret' => Rails.api_secret,
-          'X-Magicbell-User-External-Id' => notification_preference.user_external_id
+          'X-MAGICBELL-API-KEY' => Rails.api_key,
+          'X-MAGICBELL-API-SECRET' => Rails.api_secret,
+          'X-MAGICBELL-USER-EXTERNAL-ID' => notification_preference.user_external_id
         }
 
-        # Add HMAC header only if it's not nil
-        headers['X-Magicbell-User-Hmac'] = notification_preference.user_hmac if notification_preference.user_hmac
+        # Add HMAC header only if it's present
+        headers['X-MAGICBELL-USER-HMAC'] = notification_preference.user_hmac if notification_preference.user_hmac.present?
 
         magicbell.put(
           'https://api.magicbell.com/notification_preferences',

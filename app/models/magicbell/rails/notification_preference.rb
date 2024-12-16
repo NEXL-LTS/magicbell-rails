@@ -41,17 +41,19 @@ module Magicbell
           api_secret: ::Magicbell::Rails.api_secret
         )
 
+        # Build base headers that are always required
         headers = {
           'Accept' => 'application/json',
           'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
           'Content-Type' => 'application/json',
           'User-Agent' => 'Ruby',
-          'X-Magicbell-Api-Key' => ::Magicbell::Rails.api_key,
-          'X-Magicbell-Api-Secret' => ::Magicbell::Rails.api_secret,
-          'X-Magicbell-User-External-Id' => user_external_id
+          'X-MAGICBELL-API-KEY' => ::Magicbell::Rails.api_key,
+          'X-MAGICBELL-API-SECRET' => ::Magicbell::Rails.api_secret,
+          'X-MAGICBELL-USER-EXTERNAL-ID' => user_external_id
         }
 
-        headers['X-Magicbell-User-Hmac'] = user_hmac if user_hmac
+        # Add HMAC header only if it's present
+        headers['X-MAGICBELL-USER-HMAC'] = user_hmac if user_hmac.present?
 
         magicbell.put(
           'https://api.magicbell.com/notification_preferences',
