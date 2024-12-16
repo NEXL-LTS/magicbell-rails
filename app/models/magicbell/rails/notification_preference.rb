@@ -12,20 +12,9 @@ module Magicbell
 
       def self.notification_preferences(params)
         params = params.deep_symbolize_keys
-
         record = find_or_initialize_by(user_external_id: params[:user_external_id])
         record.user_hmac = params[:user_hmac]
-
-        params[:categories].each do |category_params|
-          category = record.categories.find_or_initialize_by(slug: category_params[:slug])
-
-          category_params[:channels].each do |channel_params|
-            channel = category.channels.find_or_initialize_by(slug: channel_params[:slug])
-            channel.enabled = channel_params[:enabled]
-            channel.save!
-          end
-        end
-
+        record.update_categories(params[:categories])
         record.save!
         record
       end
@@ -37,21 +26,8 @@ module Magicbell
       def update_now
         return if ::Magicbell::Rails.api_secret.blank?
 
-        magicbell = ::Magicbell::Rails::Client.new(
-          api_key: ::Magicbell::Rails.api_key,
-          api_secret: ::Magicbell::Rails.api_secret,
-          user_external_id: user_external_id,
-          user_hmac: user_hmac
-        )
-
-        options = {
-          body: to_bell_hash.to_json
-        }
-
-        magicbell.put(
-          'https://api.magicbell.com/notification_preferences',
-          options
-        )
+        client = build_magicbell_client
+        client.put('https://api.magicbell.com/notification_preferences', body: to_bell_hash.to_json)
       end
 
       def to_bell_hash
@@ -60,6 +36,32 @@ module Magicbell
             categories: categories.map(&:to_bell_hash)
           }
         }
+      end
+
+      private
+
+      def update_categories(categories_params)
+        categories_params.each do |category_params|
+          category = categories.find_or_initialize_by(slug: category_params[:slug])
+          update_channels(category, category_params[:channels])
+        end
+      end
+
+      def update_channels(category, channels_params)
+        channels_params.each do |channel_params|
+          channel = category.channels.find_or_initialize_by(slug: channel_params[:slug])
+          channel.enabled = channel_params[:enabled]
+          channel.save!
+        end
+      end
+
+      def build_magicbell_client
+        ::Magicbell::Rails::Client.new(
+          api_key: ::Magicbell::Rails.api_key,
+          api_secret: ::Magicbell::Rails.api_secret,
+          user_external_id: user_external_id,
+          user_hmac: user_hmac
+        )
       end
     end
   end
