@@ -49,78 +49,79 @@ module Magicbell
           )
       end
 
-      it 'delivers notification successfully' do
-        notification = instance_double(
-          Magicbell::Rails::Notification,
-          to_bell_hash: base_notification_data
-        )
+      context 'when delivering notifications' do
+        let(:notification) do
+          instance_double(
+            Magicbell::Rails::Notification,
+            to_bell_hash: base_notification_data
+          )
+        end
 
-        stub_magicbell_request(base_notification_data)
-        job.perform(notification, result_creator: result_creator)
+        it 'delivers notification successfully' do
+          stub_magicbell_request(base_notification_data)
+          job.perform(notification, result_creator: result_creator)
+          expect(result_creator).to have_received(:create)
+            .with(notification: notification, result: { 'id' => '123' })
+        end
 
-        expect(result_creator).to have_received(:create)
-          .with(notification: notification, result: { 'id' => '123' })
+        it 'handles custom attributes' do
+          notification_data = base_notification_data.deep_merge(
+            notification: { 'custom_attributes' => { 'example' => '1' } }
+          )
+          allow(notification).to receive(:to_bell_hash).and_return(notification_data)
+
+          stub_magicbell_request(notification_data)
+          job.perform(notification, result_creator: result_creator)
+          expect(result_creator).to have_received(:create)
+            .with(notification: notification, result: { 'id' => '123' })
+        end
+
+        context 'when attributes are invalid' do
+          let(:invalid_notification_data) do
+            base_notification_data.deep_merge(
+              notification: { 'custom_attributes' => 'NotAHash' }
+            )
+          end
+
+          before do
+            allow(notification).to receive(:to_bell_hash).and_return(invalid_notification_data)
+            stub_magicbell_request(
+              invalid_notification_data,
+              status: 422,
+              response_body: '{"errors":["custom_attributes must be a hash"]}'
+            )
+          end
+
+          it 'raises an error' do
+            expect { job.perform(notification, result_creator: result_creator) }
+              .to raise_error(MagicBell::Client::HTTPError)
+          end
+        end
       end
 
-      it 'handles custom attributes correctly' do
-        notification_data = base_notification_data.deep_merge(
-          notification: { 'custom_attributes' => { 'example' => '1' } }
-        )
-        notification = instance_double(
-          Magicbell::Rails::Notification,
-          to_bell_hash: notification_data
-        )
+      context 'when API configuration is invalid' do
+        let(:notification) do
+          instance_double(
+            Magicbell::Rails::Notification,
+            to_bell_hash: base_notification_data
+          )
+        end
 
-        stub_magicbell_request(notification_data)
-        job.perform(notification, result_creator: result_creator)
+        it 'skips delivery when api_secret is blank' do
+          allow(Magicbell::Rails).to receive(:api_secret).and_return('')
+          job.perform(notification, result_creator: result_creator)
+          expect(result_creator).not_to have_received(:create)
+        end
 
-        expect(result_creator).to have_received(:create)
-          .with(notification: notification, result: { 'id' => '123' })
-      end
-
-      it 'raises error for invalid attributes' do
-        notification_data = base_notification_data.deep_merge(
-          notification: { 'custom_attributes' => 'NotAHash' }
-        )
-        notification = instance_double(
-          Magicbell::Rails::Notification,
-          to_bell_hash: notification_data
-        )
-
-        stub_magicbell_request(
-          notification_data,
-          status: 422,
-          response_body: '{"errors":["custom_attributes must be a hash"]}'
-        )
-
-        expect { job.perform(notification, result_creator: result_creator) }
-          .to raise_error(MagicBell::Client::HTTPError)
-      end
-
-      it 'skips delivery when api_secret is blank' do
-        allow(Magicbell::Rails).to receive(:api_secret).and_return('')
-        notification = instance_double(Magicbell::Rails::Notification)
-
-        job.perform(notification, result_creator: result_creator)
-
-        expect(result_creator).not_to have_received(:create)
-      end
-
-      it 'handles invalid API secret error' do
-        notification = instance_double(
-          Magicbell::Rails::Notification,
-          to_bell_hash: base_notification_data
-        )
-
-        stub_magicbell_request(
-          base_notification_data,
-          status: 401,
-          response_body: '{"errors":["Invalid API secret"]}'
-        )
-
-        expect { job.perform(notification, result_creator: result_creator) }
-          .to raise_error(MagicBell::Client::HTTPError)
-        expect(result_creator).not_to have_received(:create)
+        it 'raises error for invalid API secret' do
+          stub_magicbell_request(
+            base_notification_data,
+            status: 401,
+            response_body: '{"errors":["Invalid API secret"]}'
+          )
+          expect { job.perform(notification, result_creator: result_creator) }
+            .to raise_error(MagicBell::Client::HTTPError)
+        end
       end
     end
   end

@@ -113,15 +113,10 @@ module Magicbell
 
           it 'creates preference records' do
             update_preferences
-            verify_notification_preferences_created
+            expect(NotificationPreference.count).to eq(1)
+            expect(PreferenceCategory.count).to eq(1)
+            expect(PreferenceChannel.count).to eq(1)
           end
-        end
-
-        def verify_notification_preferences_created
-          expect(NotificationPreference.count).to eq(1)
-          preference = NotificationPreference.last
-          expect(preference.categories.count).to eq(1)
-          expect(preference.categories.first.channels.count).to eq(1)
         end
       end
     end

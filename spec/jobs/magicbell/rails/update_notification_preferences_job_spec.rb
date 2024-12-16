@@ -36,18 +36,21 @@ module Magicbell
           .to_return(status: 200, body: '{}', headers: { 'Content-Type' => 'application/json' })
       end
 
-      it 'sends preferences update request' do
-        stub_preferences_request(
-          body: notification_preference.to_bell_hash,
-          headers: {
-            'X-Magicbell-User-External-Id' => notification_preference.user_external_id,
-            'X-Magicbell-User-Hmac' => notification_preference.user_hmac
-          }
-        )
+      context 'when updating preferences' do
+        before do
+          stub_preferences_request(
+            body: notification_preference.to_bell_hash,
+            headers: {
+              'X-Magicbell-User-External-Id' => notification_preference.user_external_id,
+              'X-Magicbell-User-Hmac' => notification_preference.user_hmac
+            }
+          )
+        end
 
-        described_class.perform_now(notification_preference)
-
-        expect(WebMock).to have_requested(:put, 'https://api.magicbell.io/notification_preferences')
+        it 'sends update request' do
+          described_class.perform_now(notification_preference)
+          expect(WebMock).to have_requested(:put, 'https://api.magicbell.io/notification_preferences')
+        end
       end
 
       context 'when api_secret is blank' do
