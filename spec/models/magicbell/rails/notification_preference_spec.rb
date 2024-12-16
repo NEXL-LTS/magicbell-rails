@@ -117,9 +117,9 @@ module Magicbell
             categories: categories
           )
 
-          expect {
+          expect do
             preference.update_later
-          }.to have_enqueued_job(UpdateNotificationPreferencesJob)
+          end.to have_enqueued_job(UpdateNotificationPreferencesJob)
         end
       end
 
@@ -143,8 +143,10 @@ module Magicbell
         end
 
         before do
-          allow(Magicbell::Rails).to receive(:api_key).and_return(api_key)
-          allow(Magicbell::Rails).to receive(:api_secret).and_return(api_secret)
+          allow(Magicbell::Rails).to receive_messages(
+            api_key: api_key,
+            api_secret: api_secret
+          )
 
           stub_request(:put, 'https://api.magicbell.io/notification_preferences')
             .with(
@@ -184,9 +186,9 @@ module Magicbell
             categories: categories
           )
 
-          expect {
+          expect do
             preference.update_now
-          }.not_to have_enqueued_job(UpdateNotificationPreferencesJob)
+          end.not_to have_enqueued_job(UpdateNotificationPreferencesJob)
 
           expect(WebMock).to have_requested(:put, 'https://api.magicbell.io/notification_preferences')
         end

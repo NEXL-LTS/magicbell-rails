@@ -11,20 +11,17 @@ module Magicbell
       let(:api_secret) { 'test-api-secret' }
 
       before do
-        allow(described_class).to receive(:api_key).and_return(api_key)
-        allow(described_class).to receive(:api_secret).and_return(api_secret)
+        allow(described_class).to receive_messages(
+          api_key: api_key,
+          api_secret: api_secret
+        )
       end
 
       describe 'end to end test' do
-        it 'creates and delivers notification' do
-          stub_request(:post, 'https://api.magicbell.io/notifications')
+        def stub_magicbell_api(endpoint:, method:, body:, response_body: '{}', headers: {})
+          stub_request(method, "https://api.magicbell.io/#{endpoint}")
             .with(
-              body: {
-                'notification' => {
-                  'title' => 'Welcome to MagicBell',
-                  'recipients' => [{ 'email' => 'grant@nexl.io' }]
-                }
-              }.to_json,
+              body: body.to_json,
               headers: {
                 'Accept' => 'application/json',
                 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
@@ -32,9 +29,45 @@ module Magicbell
                 'User-Agent' => 'Ruby',
                 'X-Magicbell-Api-Key' => api_key,
                 'X-Magicbell-Api-Secret' => api_secret
-              }
+              }.merge(headers)
             )
-            .to_return(status: 200, body: '{"id":"123"}', headers: { 'Content-Type' => 'application/json' })
+            .to_return(status: 200, body: response_body, headers: { 'Content-Type' => 'application/json' })
+        end
+
+        let(:notification_data) do
+          {
+            'notification' => {
+              'title' => 'Welcome to MagicBell',
+              'recipients' => [{ 'email' => 'grant@nexl.io' }]
+            }
+          }
+        end
+
+        let(:preferences_data) do
+          {
+            'notification_preferences' => {
+              'categories' => [
+                {
+                  'slug' => 'billing',
+                  'channels' => [
+                    {
+                      'slug' => 'email',
+                      'enabled' => false
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        end
+
+        it 'creates and delivers notification' do
+          stub_magicbell_api(
+            endpoint: 'notifications',
+            method: :post,
+            body: notification_data,
+            response_body: '{"id":"123"}'
+          )
 
           perform_enqueued_jobs do
             described_class.bell(
@@ -48,34 +81,12 @@ module Magicbell
         end
 
         it 'updates notification preferences' do
-          stub_request(:put, 'https://api.magicbell.io/notification_preferences')
-            .with(
-              body: {
-                'notification_preferences' => {
-                  'categories' => [
-                    {
-                      'slug' => 'billing',
-                      'channels' => [
-                        {
-                          'slug' => 'email',
-                          'enabled' => false
-                        }
-                      ]
-                    }
-                  ]
-                }
-              }.to_json,
-              headers: {
-                'Accept' => 'application/json',
-                'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-                'Content-Type' => 'application/json',
-                'User-Agent' => 'Ruby',
-                'X-Magicbell-Api-Key' => api_key,
-                'X-Magicbell-Api-Secret' => api_secret,
-                'X-Magicbell-User-External-Id' => 'user-123'
-              }
-            )
-            .to_return(status: 200, body: '{}', headers: { 'Content-Type' => 'application/json' })
+          stub_magicbell_api(
+            endpoint: 'notification_preferences',
+            method: :put,
+            body: preferences_data,
+            headers: { 'X-Magicbell-User-External-Id' => 'user-123' }
+          )
 
           perform_enqueued_jobs do
             described_class.notification_preferences(
@@ -83,12 +94,7 @@ module Magicbell
               categories: [
                 {
                   slug: 'billing',
-                  channels: [
-                    {
-                      slug: 'email',
-                      enabled: false
-                    }
-                  ]
+                  channels: [{ slug: 'email', enabled: false }]
                 }
               ]
             ).update_later
