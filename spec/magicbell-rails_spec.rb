@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper' # rubocop:disable Naming/FileName
 
 module Magicbell
@@ -5,24 +7,40 @@ module Magicbell
     RSpec.describe Magicbell::Rails do
       include ActiveJob::TestHelper
 
+      let(:api_key) { 'test-api-key' }
+      let(:api_secret) { 'test-api-secret' }
+
       before do
-        described_class.api_key = ENV.fetch('MAGICBELL_API_KEY', 'SET_YOUR_API_KEY')
-        described_class.api_secret = ENV.fetch('MAGICBELL_API_SECRET', 'SET_YOUR_API_SECRET')
+        allow(described_class).to receive(:api_key).and_return(api_key)
+        allow(described_class).to receive(:api_secret).and_return(api_secret)
       end
 
       describe 'end to end test' do
-        it do
-          VCR.use_cassette('e2e') do
-            perform_enqueued_jobs do
-              described_class.bell(
-                title: 'Welcome to MagicBell',
-                recipients: [
-                  {
-                    email: 'grant@nexl.io'
-                  }
-                ]
-              ).deliver_later
-            end
+        it 'creates and delivers notification' do
+          stub_request(:post, 'https://api.magicbell.io/notifications')
+            .with(
+              body: {
+                'notification' => {
+                  'title' => 'Welcome to MagicBell',
+                  'recipients' => [{ 'email' => 'grant@nexl.io' }]
+                }
+              }.to_json,
+              headers: {
+                'Accept' => 'application/json',
+                'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+                'Content-Type' => 'application/json',
+                'User-Agent' => 'Ruby',
+                'X-MAGICBELL-API-KEY' => api_key,
+                'X-MAGICBELL-API-SECRET' => api_secret
+              }
+            )
+            .to_return(status: 200, body: '{"id":"123"}', headers: { 'Content-Type' => 'application/json' })
+
+          perform_enqueued_jobs do
+            described_class.bell(
+              title: 'Welcome to MagicBell',
+              recipients: [{ email: 'grant@nexl.io' }]
+            ).deliver_later
           end
 
           expect(Notification.count).to eq(1)
@@ -32,27 +50,32 @@ module Magicbell
         it 'updates notification preferences' do
           stub_request(:put, 'https://api.magicbell.com/notification_preferences')
             .with(
-              headers: {
-                'X-MAGICBELL-API-KEY' => described_class.api_key,
-                'X-MAGICBELL-USER-EXTERNAL-ID' => 'user-123'
-              },
               body: {
-                notification_preferences: {
-                  categories: [
+                'notification_preferences' => {
+                  'categories' => [
                     {
-                      slug: 'billing',
-                      channels: [
+                      'slug' => 'billing',
+                      'channels' => [
                         {
-                          slug: 'email',
-                          enabled: false
+                          'slug' => 'email',
+                          'enabled' => false
                         }
                       ]
                     }
                   ]
                 }
+              }.to_json,
+              headers: {
+                'Accept' => 'application/json',
+                'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+                'Content-Type' => 'application/json',
+                'User-Agent' => 'Ruby',
+                'X-MAGICBELL-API-KEY' => api_key,
+                'X-MAGICBELL-API-SECRET' => api_secret,
+                'X-MAGICBELL-USER-EXTERNAL-ID' => 'user-123'
               }
             )
-            .to_return(status: 200, body: '{}')
+            .to_return(status: 200, body: '{}', headers: { 'Content-Type' => 'application/json' })
 
           perform_enqueued_jobs do
             described_class.notification_preferences(

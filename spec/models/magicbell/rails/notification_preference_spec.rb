@@ -94,9 +94,29 @@ module Magicbell
       end
 
       describe '#update_later' do
-        let(:preference) { create(:notification_preference) }
+        let(:user_external_id) { 'user-123' }
+        let(:user_hmac) { 'hmac-456' }
+        let(:categories) do
+          [
+            {
+              'slug' => 'billing',
+              'channels' => [
+                {
+                  'slug' => 'email',
+                  'enabled' => false
+                }
+              ]
+            }
+          ]
+        end
 
         it 'enqueues an update job' do
+          preference = described_class.notification_preferences(
+            user_external_id: user_external_id,
+            user_hmac: user_hmac,
+            categories: categories
+          )
+
           expect {
             preference.update_later
           }.to have_enqueued_job(UpdateNotificationPreferencesJob)
@@ -104,37 +124,69 @@ module Magicbell
       end
 
       describe '#update_now' do
-        let(:preference) { create(:notification_preference) }
+        let(:user_external_id) { 'user-123' }
+        let(:user_hmac) { 'hmac-456' }
         let(:api_key) { 'test-api-key' }
         let(:api_secret) { 'test-api-secret' }
+        let(:categories) do
+          [
+            {
+              'slug' => 'billing',
+              'channels' => [
+                {
+                  'slug' => 'email',
+                  'enabled' => false
+                }
+              ]
+            }
+          ]
+        end
 
         before do
           allow(Magicbell::Rails).to receive(:api_key).and_return(api_key)
           allow(Magicbell::Rails).to receive(:api_secret).and_return(api_secret)
 
-          stub_request(:put, "https://api.magicbell.com/notification_preferences")
+          stub_request(:put, 'https://api.magicbell.com/notification_preferences')
             .with(
-              body: preference.to_bell_hash.to_json,
+              body: {
+                notification_preferences: {
+                  categories: [
+                    {
+                      slug: 'billing',
+                      channels: [
+                        {
+                          slug: 'email',
+                          enabled: false
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }.to_json,
               headers: {
                 'Accept' => 'application/json',
-                'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
                 'Content-Type' => 'application/json',
-                'User-Agent' => 'Ruby',
                 'X-MAGICBELL-API-KEY' => api_key,
                 'X-MAGICBELL-API-SECRET' => api_secret,
-                'X-MAGICBELL-USER-EXTERNAL-ID' => preference.user_external_id,
-                'X-MAGICBELL-USER-HMAC' => preference.user_hmac
-              }.compact
+                'X-MAGICBELL-USER-EXTERNAL-ID' => user_external_id,
+                'X-MAGICBELL-USER-HMAC' => user_hmac
+              }
             )
             .to_return(status: 200, body: '{}', headers: { 'Content-Type' => 'application/json' })
         end
 
         it 'updates preferences immediately' do
+          preference = described_class.notification_preferences(
+            user_external_id: user_external_id,
+            user_hmac: user_hmac,
+            categories: categories
+          )
+
           expect {
             preference.update_now
           }.not_to have_enqueued_job(UpdateNotificationPreferencesJob)
 
-          expect(WebMock).to have_requested(:put, "https://api.magicbell.com/notification_preferences")
+          expect(WebMock).to have_requested(:put, 'https://api.magicbell.com/notification_preferences')
         end
       end
     end

@@ -6,6 +6,8 @@ module Magicbell
   module Rails
     RSpec.describe PreferenceChannel do
       describe 'validations' do
+        subject { build(:preference_channel) }
+
         it { is_expected.to validate_presence_of(:slug) }
         it { is_expected.to validate_uniqueness_of(:slug).scoped_to(:preference_category_id) }
         it { is_expected.to validate_inclusion_of(:enabled).in_array([true, false]) }

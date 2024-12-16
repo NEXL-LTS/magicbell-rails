@@ -6,6 +6,8 @@ module Magicbell
   module Rails
     RSpec.describe PreferenceCategory do
       describe 'validations' do
+        subject { build(:preference_category) }
+
         it { is_expected.to validate_presence_of(:slug) }
         it { is_expected.to validate_uniqueness_of(:slug).scoped_to(:notification_preference_id) }
       end
