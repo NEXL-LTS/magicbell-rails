@@ -2,7 +2,10 @@
 
 # Magicbell::Rails
 
-Wrapper around magicbell api to deliver notifications to your users in a background job
+Wrapper around magicbell api to:
+- deliver notifications to your users in a background job
+- fetch categories
+- update notification preferences
 
 ## Installation
 
@@ -59,6 +62,21 @@ Magicbell::Rails.bell(
     }
   }
 ).deliver_later
+```
+
+```ruby
+# Gets all categories that have been created
+Magicbell::Rails.fetch_categories(external_id)
+
+# Updates notification preferences given a payload
+payload = { 'notification_preferences' => {
+              'categories' => [
+                { 'slug' => 'stay_in_touch', 'channels' => [{ 'slug' => 'email', 'enabled' => false }] },
+                { 'slug' => 'list_shared', 'channels' => [{ 'slug' => 'email', 'enabled' => false }] }
+              ]
+            }
+          }.to_json
+Magicbell::Rails.update_notification_preferences(external_id, payload)
 ```
 
 ## Contributing

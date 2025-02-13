@@ -11,5 +11,22 @@ module Magicbell
     def self.bell(args)
       Notification.bell(args)
     end
+
+    def self.fetch_categories(external_id)
+      response = client.user_with_external_id(external_id).notification_preferences.retrieve.attributes
+
+      response['categories']&.map { |category| category['slug'] } || []
+    end
+
+    def self.update_notification_preferences(external_id, payload)
+      client.user_with_external_id(external_id).notification_preferences.update(payload)
+    end
+
+    def self.client
+      MagicBell::Client.new(
+        api_key: Magicbell::Rails.api_key,
+        api_secret: Magicbell::Rails.api_secret
+      )
+    end
   end
 end
