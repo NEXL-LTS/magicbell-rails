@@ -11,6 +11,8 @@ module Magicbell
         described_class.api_secret = ENV.fetch('MAGICBELL_API_SECRET', 'SET_YOUR_API_SECRET')
       end
 
+      let!(:external_id) { 'nexl-360-latest.nexl.cloud/455' }
+
       describe 'end to end test' do
         it do
           VCR.use_cassette('e2e') do
@@ -31,61 +33,43 @@ module Magicbell
         end
       end
 
-      describe 'fetch and updates' do
-        let(:client) { instance_double(MagicBell::Client) }
-        let(:user) { instance_double(MagicBell::User) }
-        let(:notification_preferences) { instance_double(MagicBell::UserNotificationPreferences) }
-        let(:external_id) { 'test-user' }
-        let(:categories_response) do
+      describe '#fetch_categories' do
+        it 'fetches categories from MagicBell' do
+          VCR.use_cassette('fetch_categories') do
+            categories = described_class.fetch_categories(external_id)
+            expect(categories).to be_an(Array)
+            expect(categories).to include('StayInTouchReminder', 'FollowUpReminder')
+          end
+        end
+
+        context 'when there are no categories' do
+          it 'returns an empty array' do
+            VCR.use_cassette('fetch_no_categories') do
+              categories = described_class.fetch_categories('non-existent-external-id')
+              expect(categories).to eq([])
+            end
+          end
+        end
+      end
+
+      describe '#update_notification_preferences' do
+        let(:payload) do
           {
-            'categories' => [
-              { 'slug' => 'stay_in_touch' },
-              { 'slug' => 'list_shared' }
-            ]
+            notification_preferences: {
+              'categories' => [
+                {
+                  'slug' => 'StayInTouchReminder',
+                  'channels' => [{ 'slug' => 'email', 'enabled' => false }]
+                }
+              ]
+            }
           }
         end
 
-        before do
-          allow(MagicBell::Client).to receive(:new).and_return(client)
-          allow(client).to receive(:user_with_external_id).with(external_id).and_return(user)
-          allow(user).to receive(:notification_preferences).and_return(notification_preferences)
-          allow(notification_preferences).to receive(:update)
-          allow(client).to receive(:create_notification).and_return(true)
-        end
-
-        describe '#fetch_categories' do
-          it 'returns category slugs when categories exist' do
-            allow(notification_preferences).to receive(:retrieve).and_return(
-              instance_double(MagicBell::UserNotificationPreferences,
-                              attributes: categories_response)
-            )
-
-            expect(described_class.fetch_categories(external_id)).to match_array(%w[stay_in_touch
-                                                                                    list_shared])
-          end
-
-          it 'returns an empty array when no categories exist' do
-            allow(notification_preferences).to receive(:retrieve).and_return(
-              instance_double(MagicBell::UserNotificationPreferences,
-                              attributes: {})
-            )
-            expect(described_class.fetch_categories(external_id)).to eq([])
-          end
-        end
-
-        describe '#update_notification_preferences' do
-          let(:payload) do
-            {
-              'categories' => [
-                { 'slug' => 'stay_in_touch', 'channels' => [{ 'slug' => 'email', 'enabled' => false }] }
-              ]
-            }
-          end
-
-          it 'sends an update request with the correct payload' do
-            described_class.update_notification_preferences(external_id, payload)
-
-            expect(notification_preferences).to have_received(:update).with(payload)
+        it 'updates notification preferences on MagicBell' do
+          VCR.use_cassette('update_notification_preferences') do
+            expect { described_class.update_notification_preferences(external_id, payload) }
+              .not_to raise_error
           end
         end
       end

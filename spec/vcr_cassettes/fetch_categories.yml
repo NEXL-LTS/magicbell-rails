@@ -1,0 +1,103 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.magicbell.io/notification_preferences
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      X-Magicbell-Api-Key:
+      - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      X-Magicbell-Api-Secret:
+      - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      X-Magicbell-User-External-Id:
+      - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 14 Feb 2025 00:40:02 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Amzn-Trace-Id:
+      - Root=1-67ae90e1-3b405a5d6feae72454a25552;Parent=7a2bbcd1db3aa2cc;Sampled=0;Lineage=1:a1dcffa6:0
+      Access-Control-Max-Age:
+      - '86400'
+      X-Amzn-Requestid:
+      - aec240b9-a346-45d7-8786-a220557b0790
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Vary:
+      - accept-encoding
+      X-Cache:
+      - Miss from cloudfront
+      Via:
+      - 1.1 e3f515cf2b40cd90e36f3532dbd8a5ae.cloudfront.net (CloudFront)
+      X-Amz-Cf-Pop:
+      - SYD3-P1
+      X-Amz-Cf-Id:
+      - m76eLasulJy8YLLLncNsNgQeivnUd8mcxDTGPVZvHZtfpzq2Cgn67g==
+      Cf-Cache-Status:
+      - DYNAMIC
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=1hnxRV8h7teP8Qzre%2FIv9mOxaLh%2FaF%2F99XhnGhZv6xNtYLH3v0FCAfOSLmHEnhGzC3M1koUXBBgmjVFBmRz3vq2ypR8pNN%2BGeOY566ZvU1BgvufkFB7aTYVILl0zFR7GOHk%3D"}],"group":"cf-nel","max_age":604800}'
+      Nel:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 911901205f02a979-SYD
+      Server-Timing:
+      - cfL4;desc="?proto=TCP&rtt=9912&min_rtt=9429&rtt_var=3881&sent=4&recv=6&lost=0&retrans=0&sent_bytes=2797&recv_bytes=1004&delivery_rate=307137&cwnd=251&unsent_bytes=0&cid=e037202a538dc197&ts=934&x=0"
+    body:
+      encoding: ASCII-8BIT
+      string: '
+      {
+        "notification_preferences": {
+          "categories": [
+            {
+              "slug": "StayInTouchReminder",
+              "label": "Stay in Touch",
+              "channels": [
+                { "slug": "in_app", "label": "In App", "enabled": true },
+                { "slug": "mobile_push", "label": "Mobile Push", "enabled": true },
+                { "slug": "web_push", "label": "Web Push", "enabled": true },
+                { "slug": "email", "label": "Email", "enabled": true }
+              ]
+            },
+            {
+              "slug": "FollowUpReminder",
+              "label": "Opportunity Follow Up Reminder",
+              "channels": [
+                { "slug": "in_app", "label": "In App", "enabled": true },
+                { "slug": "mobile_push", "label": "Mobile Push", "enabled": true },
+                { "slug": "web_push", "label": "Web Push", "enabled": true },
+                { "slug": "email", "label": "Email", "enabled": true }
+              ]
+            }
+          ]
+        }
+      }
+
+        '
+  recorded_at: Fri, 14 Feb 2025 00:40:02 GMT
+recorded_with: VCR 6.3.1
