@@ -9,14 +9,14 @@ module Magicbell
         response = Magicbell::Rails.client.user_with_external_id(external_id)
                                    .notification_preferences.retrieve.attributes
 
-        response['categories']&.map do |category|
+        Array(response['categories']).map do |category|
           UserCategory.new(
             slug: category['slug'], label: category['label'],
             channels: category['channels'].map do |channel|
               Channel.new(slug: channel['slug'], label: channel['label'], enabled: channel['enabled'])
             end
           )
-        end || []
+        end
       end
     end
   end
