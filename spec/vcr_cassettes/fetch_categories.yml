@@ -78,9 +78,6 @@ http_interactions:
               "slug": "StayInTouchReminder",
               "label": "Stay in Touch",
               "channels": [
-                { "slug": "in_app", "label": "In App", "enabled": true },
-                { "slug": "mobile_push", "label": "Mobile Push", "enabled": true },
-                { "slug": "web_push", "label": "Web Push", "enabled": true },
                 { "slug": "email", "label": "Email", "enabled": true }
               ]
             },
@@ -88,9 +85,6 @@ http_interactions:
               "slug": "FollowUpReminder",
               "label": "Opportunity Follow Up Reminder",
               "channels": [
-                { "slug": "in_app", "label": "In App", "enabled": true },
-                { "slug": "mobile_push", "label": "Mobile Push", "enabled": true },
-                { "slug": "web_push", "label": "Web Push", "enabled": true },
                 { "slug": "email", "label": "Email", "enabled": true }
               ]
             }

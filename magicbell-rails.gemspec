@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name        = 'magicbell-rails'
-  spec.version     = '0.2.1'
+  spec.version     = '0.3.0'
   spec.authors     = ['Grant Petersen-Speelman']
   spec.email       = ['grant@nexl.io']
   spec.homepage    = 'https://github.com/NEXL-LTS/nexl360/local_gems/magicbell-rails'

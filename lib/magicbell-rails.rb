@@ -12,14 +12,12 @@ module Magicbell
       Notification.bell(args)
     end
 
-    def self.fetch_categories(external_id)
-      response = client.user_with_external_id(external_id).notification_preferences.retrieve.attributes
-
-      response['categories']&.map { |category| category['slug'] } || []
+    def self.fetch_categories(external_id:)
+      UserCategory.fetch(external_id:)
     end
 
-    def self.update_notification_preferences(external_id, payload)
-      client.user_with_external_id(external_id).notification_preferences.update(payload)
+    def self.update_notification_preferences(external_id:, payload:)
+      NotificationPreference.update(external_id:, payload: payload)
     end
 
     def self.client

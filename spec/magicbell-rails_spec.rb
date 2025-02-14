@@ -12,6 +12,18 @@ module Magicbell
       end
 
       let!(:external_id) { 'nexl-360-latest.nexl.cloud/455' }
+      let!(:email_channel) do
+        UserCategory::Channel.new(slug: 'email', label: 'Email', enabled: true)
+      end
+      let!(:stay_in_touch_category) do
+        UserCategory::UserCategory.new(slug: 'StayInTouchReminder', label: 'Stay in Touch',
+                                       channels: [email_channel])
+      end
+
+      let!(:follow_up_category) do
+        UserCategory::UserCategory.new(slug: 'FollowUpReminder', label: 'Opportunity Follow Up Reminder',
+                                       channels: [email_channel])
+      end
 
       describe 'end to end test' do
         it do
@@ -36,16 +48,16 @@ module Magicbell
       describe '#fetch_categories' do
         it 'fetches categories from MagicBell' do
           VCR.use_cassette('fetch_categories') do
-            categories = described_class.fetch_categories(external_id)
+            categories = described_class.fetch_categories(external_id:)
             expect(categories).to be_an(Array)
-            expect(categories).to include('StayInTouchReminder', 'FollowUpReminder')
+            expect(categories).to include(stay_in_touch_category, follow_up_category)
           end
         end
 
         context 'when there are no categories' do
           it 'returns an empty array' do
             VCR.use_cassette('fetch_no_categories') do
-              categories = described_class.fetch_categories('non-existent-external-id')
+              categories = described_class.fetch_categories(external_id: 'non-existent-external-id')
               expect(categories).to eq([])
             end
           end
@@ -68,7 +80,7 @@ module Magicbell
 
         it 'updates notification preferences on MagicBell' do
           VCR.use_cassette('update_notification_preferences') do
-            expect { described_class.update_notification_preferences(external_id, payload) }
+            expect { described_class.update_notification_preferences(external_id:, payload:) }
               .not_to raise_error
           end
         end

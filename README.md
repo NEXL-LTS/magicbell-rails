@@ -66,7 +66,7 @@ Magicbell::Rails.bell(
 
 ```ruby
 # Gets all categories that have been created
-Magicbell::Rails.fetch_categories(external_id)
+Magicbell::Rails.fetch_categories(external_id:)
 
 # Updates notification preferences given a payload
 payload = { 'notification_preferences' => {
@@ -76,7 +76,7 @@ payload = { 'notification_preferences' => {
               ]
             }
           }.to_json
-Magicbell::Rails.update_notification_preferences(external_id, payload)
+Magicbell::Rails.update_notification_preferences(external_id:, payload:)
 ```
 
 ## Contributing
