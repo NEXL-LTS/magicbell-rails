@@ -1,4 +1,5 @@
 require 'magicbell/rails/engine' # rubocop:disable Naming/FileName
+require 'magicbell'
 
 module Magicbell
   module Rails
