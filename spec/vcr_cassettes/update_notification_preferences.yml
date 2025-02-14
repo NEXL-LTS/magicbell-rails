@@ -1,0 +1,134 @@
+---
+http_interactions:
+- request:
+    method: put
+    uri: https://api.magicbell.io/notification_preferences
+    body:
+      encoding: UTF-8
+      string: '{"notification_preferences":{"categories":[{"slug":"StayInTouchReminder","channels":[{"slug":"email","enabled":false}]}]}}'
+    headers:
+      X-Magicbell-Api-Key:
+      - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      X-Magicbell-Api-Secret:
+      - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      X-Magicbell-User-External-Id:
+      - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 14 Feb 2025 00:50:10 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Max-Age:
+      - '86400'
+      X-Amzn-Remapped-Date:
+      - Fri, 14 Feb 2025 00:50:09 GMT
+      X-Amzn-Requestid:
+      - 82f768eb-cf37-42b0-b0a3-e18732daa17c
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Runtime:
+      - '1.006195'
+      X-Xss-Protection:
+      - 1; mode=block
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Frame-Options:
+      - SAMEORIGIN
+      Access-Control-Allow-Headers:
+      - "*"
+      X-Amzn-Remapped-Content-Length:
+      - '4352'
+      X-Download-Options:
+      - noopen
+      X-Request-Id:
+      - 5f2d2076-1b7d-4e73-9c74-18aff8282738
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Content-Type-Options:
+      - nosniff
+      Vary:
+      - accept-encoding
+      Access-Control-Allow-Methods:
+      - "*"
+      X-Amzn-Trace-Id:
+      - Root=1-67ae9340-3df889fd359e74af3997446d;Parent=7b2fae773c663b3f;Sampled=0;Lineage=1:a1dcffa6:0
+      Etag:
+      - W/"411fd99251cb98b43055086d2b99b549"
+      X-Cache:
+      - Miss from cloudfront
+      Via:
+      - 1.1 43b4a9a8792e30ac49642ef84dd35fc8.cloudfront.net (CloudFront)
+      X-Amz-Cf-Pop:
+      - SYD3-P1
+      X-Amz-Cf-Id:
+      - D5dpL1Zpm-uddK8ccuz5JtvR5lbvJ2ti57OGBWZAqSL-yW22zDD0fg==
+      Cf-Cache-Status:
+      - DYNAMIC
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=LTo3CJhI5Um4CKF01NPkeQbpD6hC7aBy21Z3XZUz8v2g%2BojOgBRpxF7%2BIatywOJdIIitimuPvQ5GlathjiQx4ClaBgbNihjhKS08ytmObX%2FJNpVXrq46OXOKwP580cULvaI%3D"}],"group":"cf-nel","max_age":604800}'
+      Nel:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 91190ff16f8be7ec-SYD
+      Server-Timing:
+      - cfL4;desc="?proto=TCP&rtt=6194&min_rtt=4949&rtt_var=3551&sent=4&recv=8&lost=0&retrans=0&sent_bytes=2797&recv_bytes=1169&delivery_rate=282096&cwnd=251&unsent_bytes=0&cid=9a2139af7202f43c&ts=1844&x=0"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"notification_preferences":{"categories":[{"label":"Task Assigned","slug":"AssignedTask","channels":[{"label":"In
+        app","slug":"in_app","enabled":true},{"label":"Mobile push","slug":"mobile_push","enabled":true},{"label":"Web
+        push","slug":"web_push","enabled":true},{"label":"Email","slug":"email","enabled":true}]},{"label":"Comment
+        Added","slug":"CommentAdded","channels":[{"label":"In app","slug":"in_app","enabled":true},{"label":"Mobile
+        push","slug":"mobile_push","enabled":true},{"label":"Web push","slug":"web_push","enabled":true},{"label":"Email","slug":"email","enabled":true}]},{"label":"Comment
+        Mentioned","slug":"CommentMentioned","channels":[{"label":"In app","slug":"in_app","enabled":true},{"label":"Mobile
+        push","slug":"mobile_push","enabled":true},{"label":"Web push","slug":"web_push","enabled":true},{"label":"Email","slug":"email","enabled":true}]},{"label":"Create
+        Activity Reminder","slug":"CreateActivityReminder","channels":[{"label":"In
+        app","slug":"in_app","enabled":true},{"label":"Mobile push","slug":"mobile_push","enabled":true},{"label":"Web
+        push","slug":"web_push","enabled":true},{"label":"Email","slug":"email","enabled":true}]},{"label":"Delegated
+        Task Completed","slug":"DelegatedTaskCompleted","channels":[{"label":"In app","slug":"in_app","enabled":true},{"label":"Mobile
+        push","slug":"mobile_push","enabled":true},{"label":"Web push","slug":"web_push","enabled":true},{"label":"Email","slug":"email","enabled":true}]},{"label":"Delegated
+        Task Reopened","slug":"DelegatedTaskReopened","channels":[{"label":"In app","slug":"in_app","enabled":true},{"label":"Mobile
+        push","slug":"mobile_push","enabled":true},{"label":"Web push","slug":"web_push","enabled":true},{"label":"Email","slug":"email","enabled":true}]},{"label":"Opportunity
+        Follow Up Reminder","slug":"FollowUpReminder","channels":[{"label":"In app","slug":"in_app","enabled":true},{"label":"Mobile
+        push","slug":"mobile_push","enabled":true},{"label":"Web push","slug":"web_push","enabled":true},{"label":"Email","slug":"email","enabled":true}]},{"label":"List
+        Shared","slug":"ListShared","channels":[{"label":"In app","slug":"in_app","enabled":true},{"label":"Mobile
+        push","slug":"mobile_push","enabled":true},{"label":"Web push","slug":"web_push","enabled":true},{"label":"Email","slug":"email","enabled":true}]},{"label":"New
+        Workspace Membership","slug":"NewProjectMembership","channels":[{"label":"In
+        app","slug":"in_app","enabled":true},{"label":"Mobile push","slug":"mobile_push","enabled":true},{"label":"Web
+        push","slug":"web_push","enabled":true},{"label":"Email","slug":"email","enabled":true}]},{"label":"Opportunity
+        Status Updated","slug":"OpportunityStatusChanged","channels":[{"label":"In
+        app","slug":"in_app","enabled":true},{"label":"Mobile push","slug":"mobile_push","enabled":true},{"label":"Web
+        push","slug":"web_push","enabled":true},{"label":"Email","slug":"email","enabled":true}]},{"label":"List
+        View Shared","slug":"SharedListView","channels":[{"label":"In app","slug":"in_app","enabled":true},{"label":"Mobile
+        push","slug":"mobile_push","enabled":true},{"label":"Web push","slug":"web_push","enabled":true},{"label":"Email","slug":"email","enabled":true}]},{"label":"Stay
+        In Touch Batched Reminder","slug":"StayInTouchBatchedReminder","channels":[{"label":"In
+        app","slug":"in_app","enabled":true},{"label":"Mobile push","slug":"mobile_push","enabled":true},{"label":"Web
+        push","slug":"web_push","enabled":true},{"label":"Email","slug":"email","enabled":true}]},{"label":"Stay
+        in Touch","slug":"StayInTouchReminder","channels":[{"label":"In app","slug":"in_app","enabled":true},{"label":"Mobile
+        push","slug":"mobile_push","enabled":true},{"label":"Web push","slug":"web_push","enabled":true},{"label":"Email","slug":"email","enabled":false}]},{"label":"Upcoming
+        Meeting Reminder","slug":"UpcomingMeetingReminder","channels":[{"label":"In
+        app","slug":"in_app","enabled":true},{"label":"Mobile push","slug":"mobile_push","enabled":true},{"label":"Web
+        push","slug":"web_push","enabled":true},{"label":"Email","slug":"email","enabled":true}]},{"label":"Upcoming
+        Pending Task","slug":"UpcomingPendingTask","channels":[{"label":"In app","slug":"in_app","enabled":true},{"label":"Mobile
+        push","slug":"mobile_push","enabled":true},{"label":"Web push","slug":"web_push","enabled":true},{"label":"Email","slug":"email","enabled":true}]}]}}'
+  recorded_at: Fri, 14 Feb 2025 00:50:09 GMT
+recorded_with: VCR 6.3.1

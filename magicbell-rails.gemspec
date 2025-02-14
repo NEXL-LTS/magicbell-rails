@@ -1,8 +1,8 @@
 Gem::Specification.new do |spec|
   spec.name        = 'magicbell-rails'
-  spec.version     = '0.2.0'
-  spec.authors     = ['Grant Petersen-Speelman']
-  spec.email       = ['grant@nexl.io']
+  spec.version     = '0.3.0'
+  spec.authors     = ['Grant Petersen-Speelman', 'Connor Moot']
+  spec.email       = ['grant@nexl.io', 'connor@nexl.io']
   spec.homepage    = 'https://github.com/NEXL-LTS/nexl360/local_gems/magicbell-rails'
   spec.summary     = 'Rails wrapper gem for magicbell'
   spec.description = 'Rails wrapper gem for magicbell'
