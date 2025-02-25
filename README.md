@@ -67,7 +67,9 @@ Magicbell::Rails.bell(
 ```ruby
 # Gets all categories that have been created
 Magicbell::Rails.fetch_categories(external_id:)
+```
 
+```ruby
 # Updates notification preferences given a payload
 payload = { 'notification_preferences' => {
               'categories' => [
@@ -77,6 +79,16 @@ payload = { 'notification_preferences' => {
             }
           }.to_json
 Magicbell::Rails.update_notification_preferences(external_id:, payload:)
+```
+
+```ruby
+# Returns true if the users exists
+Magicbell::Rails.user_exists?(external_id:)
+```
+
+```ruby
+# Creates a user
+Magicbell::Rails.create_user(external_id:, email:, first_name:, last_name:, phone_numbers:)
 ```
 
 ## Contributing

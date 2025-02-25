@@ -1,0 +1,85 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.magicbell.com/users
+    body:
+      encoding: UTF-8
+      string: '{"user":{"external_id":"nexl-360-latest.nexl.cloud/99999","email":"@invalid@email@.com.com.com","first_name":"Test","last_name":"User","custom_attributes":{},"phone_numbers":[]}}'
+    headers:
+      X-Magicbell-Api-Key:
+      - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      X-Magicbell-Api-Secret:
+      - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 422
+      message: Unprocessable Entity
+    headers:
+      Date:
+      - Tue, 25 Feb 2025 01:14:53 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '70'
+      Connection:
+      - keep-alive
+      X-Amzn-Remapped-Date:
+      - Tue, 25 Feb 2025 01:14:53 GMT
+      X-Amzn-Requestid:
+      - 34cad98a-ad67-4d9e-aaf0-ce72c9e38385
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Runtime:
+      - '0.006526'
+      X-Xss-Protection:
+      - 1; mode=block
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Frame-Options:
+      - SAMEORIGIN
+      Access-Control-Allow-Headers:
+      - "*"
+      X-Download-Options:
+      - noopen
+      X-Request-Id:
+      - f6fa986d-adbe-4d63-af3a-77665451efa7
+      Cache-Control:
+      - no-cache
+      X-Content-Type-Options:
+      - nosniff
+      Access-Control-Allow-Methods:
+      - "*"
+      X-Amzn-Trace-Id:
+      - Root=1-67bd198d-55c893957358e58a694e3657;Parent=56be73541236c8f1;Sampled=0;Lineage=1:a1dcffa6:0
+      Access-Control-Max-Age:
+      - '86400'
+      X-Cache:
+      - Error from cloudfront
+      Via:
+      - 1.1 fda8cdb1c5d1bc3e2d4cabe818dc8c5e.cloudfront.net (CloudFront)
+      X-Amz-Cf-Pop:
+      - SYD3-P1
+      X-Amz-Cf-Id:
+      - BlYJxLudhQslKqodTLvYoRvOVUyEeN8CgV9fgoLkyOyv-R1IQyS4Ew==
+      Cf-Cache-Status:
+      - DYNAMIC
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9173d7512cb25d31-SYD
+    body:
+      encoding: UTF-8
+      string: '{"errors":[{"message":"Param ''user.email'' must be an email address"}]}'
+  recorded_at: Tue, 25 Feb 2025 01:14:53 GMT
+recorded_with: VCR 6.3.1

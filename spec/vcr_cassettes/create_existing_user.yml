@@ -1,0 +1,89 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.magicbell.com/users
+    body:
+      encoding: UTF-8
+      string: '{"user":{"external_id":"nexl-360-latest.nexl.cloud/99999","email":"testingcreate@nexl.cloud","first_name":"Test","last_name":"User","custom_attributes":{},"phone_numbers":[]}}'
+    headers:
+      X-Magicbell-Api-Key:
+      - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      X-Magicbell-Api-Secret:
+      - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Date:
+      - Tue, 25 Feb 2025 00:56:18 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '219'
+      Connection:
+      - keep-alive
+      X-Amzn-Remapped-Date:
+      - Tue, 25 Feb 2025 00:56:18 GMT
+      X-Amzn-Requestid:
+      - 492c63bc-f548-480e-b7f1-6386f5df3c49
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Runtime:
+      - '0.044042'
+      X-Xss-Protection:
+      - 1; mode=block
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Frame-Options:
+      - SAMEORIGIN
+      Access-Control-Allow-Headers:
+      - "*"
+      X-Amzn-Remapped-Content-Length:
+      - '219'
+      X-Download-Options:
+      - noopen
+      X-Request-Id:
+      - d99fe2b1-53b6-49b3-9538-faa9ce37ed0a
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Content-Type-Options:
+      - nosniff
+      Etag:
+      - W/"320df35c7cfe1b02c84dd766010a1139"
+      Access-Control-Allow-Methods:
+      - "*"
+      X-Amzn-Trace-Id:
+      - Root=1-67bd1532-24df16f307b360df55d07be5;Parent=4837daa07b884aed;Sampled=0;Lineage=1:a1dcffa6:0
+      Access-Control-Max-Age:
+      - '86400'
+      X-Cache:
+      - Miss from cloudfront
+      Via:
+      - 1.1 490b2d87256587a734fcd39d5d6c7392.cloudfront.net (CloudFront)
+      X-Amz-Cf-Pop:
+      - SYD3-P1
+      X-Amz-Cf-Id:
+      - t8gLyt2_HccEdlyQez-v8w_UlM85pPDSAOZvS_TY2Te6rSF7EMzKBQ==
+      Cf-Cache-Status:
+      - DYNAMIC
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9173bc151cef57d5-SYD
+    body:
+      encoding: UTF-8
+      string: '{"user":{"id":"1ecd4ec4-9ee5-4c54-908d-56fb7dfbdb13","external_id":"nexl-360-latest.nexl.cloud/99999","email":"testingcreate@nexl.cloud","first_name":"Test","last_name":"User","custom_attributes":{},"phone_numbers":[]}}'
+  recorded_at: Tue, 25 Feb 2025 00:56:18 GMT
+recorded_with: VCR 6.3.1
