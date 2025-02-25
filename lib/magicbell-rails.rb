@@ -18,7 +18,15 @@ module Magicbell
     end
 
     def self.update_notification_preferences(external_id:, payload:)
-      NotificationPreference.update(external_id:, payload: payload)
+      NotificationPreference.update(external_id:, payload:)
+    end
+
+    def self.user_exists?(external_id:)
+      User.exists?(external_id:)
+    end
+
+    def self.create_user(external_id:, email:, first_name:, last_name:, phone_numbers: [])
+      User.create(external_id:, email:, first_name:, last_name:, phone_numbers:)
     end
 
     def self.client

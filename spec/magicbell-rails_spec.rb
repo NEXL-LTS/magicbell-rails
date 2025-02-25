@@ -84,6 +84,65 @@ module Magicbell
           end
         end
       end
+
+      describe '#user_exists?' do
+        let(:external_id) { 'nexl-360-latest.nexl.cloud/455' }
+
+        it 'returns true if the user exists' do
+          VCR.use_cassette('user_exists') do
+            expect(described_class.user_exists?(external_id: external_id)).to be(true)
+          end
+        end
+
+        it 'returns false if the user does not exist' do
+          VCR.use_cassette('user_does_not_exist') do
+            expect(described_class.user_exists?(external_id: 'non-existent-external-id')).to be(false)
+          end
+        end
+      end
+
+      describe '#create_user' do
+        let(:external_id) { 'nexl-360-latest.nexl.cloud/99999' }
+        let(:email) { 'testingcreate@nexl.cloud' }
+        let(:first_name) { 'Test' }
+        let(:last_name) { 'User' }
+        let(:phone_numbers) { [] }
+
+        it 'creates a user on MagicBell' do
+          VCR.use_cassette('create_user') do
+            result = described_class.create_user(
+              external_id:, email:, first_name:, last_name:, phone_numbers:
+            )
+
+            expect(result['id']).to be_present
+          end
+        end
+
+        context 'when the user already exists' do
+          it 'returns true' do
+            VCR.use_cassette('create_existing_user') do
+              result = described_class.create_user(
+                external_id:, email:, first_name:, last_name:, phone_numbers:
+              )
+
+              expect(result['id']).to be_present
+            end
+          end
+        end
+
+        context 'when the user creation fails' do
+          it 'returns false' do
+            VCR.use_cassette('create_user_failure') do
+              expect(
+                described_class.create_user(
+                  external_id:, email: '@invalid@email@.com.com.com', first_name:, last_name:,
+                  phone_numbers:
+                )
+              ).to be(false)
+            end
+          end
+        end
+      end
     end
   end
 end

@@ -1,0 +1,107 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.magicbell.io/notification_preferences
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      X-Magicbell-Api-Key:
+      - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      X-Magicbell-Api-Secret:
+      - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      X-Magicbell-User-External-Id:
+      - nexl-360-latest.nexl.cloud/455
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 25 Feb 2025 00:50:30 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Amzn-Trace-Id:
+      - Root=1-67bd13d6-7db213c749a1895017c2205c;Parent=217383ede9171ced;Sampled=0;Lineage=1:a1dcffa6:0
+      Access-Control-Max-Age:
+      - '86400'
+      X-Amzn-Requestid:
+      - 14351a78-5144-4977-82c4-50c5872517ac
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Vary:
+      - accept-encoding
+      X-Cache:
+      - Miss from cloudfront
+      Via:
+      - 1.1 aebce22763fb7e32a807cd494884a9b4.cloudfront.net (CloudFront)
+      X-Amz-Cf-Pop:
+      - SYD3-P1
+      X-Amz-Cf-Id:
+      - jy2fiNqPjRpa0nRSsb4ZVIzCY4LK0JO-eLJ3ypI8H37RYuSLzz61qA==
+      Cf-Cache-Status:
+      - DYNAMIC
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=jHTrxaUgjzm5b7MnclxnScyvX5wjulnw5WMybMtK2yy3OlRjvrgS%2BtXcixlBBggZgraeuNr6PtzeHq2PFrzZoxEvt1gbvzvhZ0RHWU47l8Va9uSRxL%2BbCM4YxwAlnqeGueM%3D"}],"group":"cf-nel","max_age":604800}'
+      Nel:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9173b3977f05a95b-SYD
+      Server-Timing:
+      - cfL4;desc="?proto=TCP&rtt=24913&min_rtt=10105&rtt_var=13621&sent=5&recv=6&lost=0&retrans=0&sent_bytes=2795&recv_bytes=1004&delivery_rate=286590&cwnd=251&unsent_bytes=0&cid=58181857efb300f4&ts=940&x=0"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"notification_preferences":{"categories":[{"slug":"StayInTouchReminder","label":"Stay
+        in Touch","channels":[{"slug":"in_app","label":"In App","enabled":true},{"slug":"mobile_push","label":"Mobile
+        Push","enabled":true},{"slug":"web_push","label":"Web Push","enabled":true},{"slug":"email","label":"Email","enabled":false},{"slug":"slack","label":"Slack","enabled":true},{"slug":"sms","label":"Sms","enabled":true}]},{"slug":"DelegatedTaskReopened","label":"Delegated
+        Task Reopened","channels":[{"slug":"in_app","label":"In App","enabled":true},{"slug":"mobile_push","label":"Mobile
+        Push","enabled":true},{"slug":"web_push","label":"Web Push","enabled":true},{"slug":"email","label":"Email","enabled":false},{"slug":"slack","label":"Slack","enabled":true},{"slug":"sms","label":"Sms","enabled":true}]},{"slug":"FollowUpReminder","label":"Opportunity
+        Follow Up Reminder","channels":[{"slug":"in_app","label":"In App","enabled":true},{"slug":"mobile_push","label":"Mobile
+        Push","enabled":true},{"slug":"web_push","label":"Web Push","enabled":true},{"slug":"email","label":"Email","enabled":false},{"slug":"slack","label":"Slack","enabled":true},{"slug":"sms","label":"Sms","enabled":true}]},{"slug":"CreateActivityReminder","label":"Create
+        Activity Reminder","channels":[{"slug":"in_app","label":"In App","enabled":true},{"slug":"mobile_push","label":"Mobile
+        Push","enabled":true},{"slug":"web_push","label":"Web Push","enabled":true},{"slug":"email","label":"Email","enabled":false},{"slug":"slack","label":"Slack","enabled":true},{"slug":"sms","label":"Sms","enabled":true}]},{"slug":"UpcomingMeetingReminder","label":"Upcoming
+        Meeting Reminder","channels":[{"slug":"in_app","label":"In App","enabled":true},{"slug":"mobile_push","label":"Mobile
+        Push","enabled":true},{"slug":"web_push","label":"Web Push","enabled":true},{"slug":"email","label":"Email","enabled":false},{"slug":"slack","label":"Slack","enabled":true},{"slug":"sms","label":"Sms","enabled":true}]},{"slug":"UpcomingPendingTask","label":"Upcoming
+        Pending Task","channels":[{"slug":"in_app","label":"In App","enabled":true},{"slug":"mobile_push","label":"Mobile
+        Push","enabled":true},{"slug":"web_push","label":"Web Push","enabled":true},{"slug":"email","label":"Email","enabled":false},{"slug":"slack","label":"Slack","enabled":true},{"slug":"sms","label":"Sms","enabled":true}]},{"slug":"AssignedTask","label":"Task
+        Assigned","channels":[{"slug":"in_app","label":"In App","enabled":true},{"slug":"mobile_push","label":"Mobile
+        Push","enabled":true},{"slug":"web_push","label":"Web Push","enabled":true},{"slug":"email","label":"Email","enabled":false},{"slug":"slack","label":"Slack","enabled":true},{"slug":"sms","label":"Sms","enabled":true}]},{"slug":"OpportunityStatusChanged","label":"Opportunity
+        Status Updated","channels":[{"slug":"in_app","label":"In App","enabled":true},{"slug":"mobile_push","label":"Mobile
+        Push","enabled":true},{"slug":"web_push","label":"Web Push","enabled":true},{"slug":"email","label":"Email","enabled":false},{"slug":"slack","label":"Slack","enabled":true},{"slug":"sms","label":"Sms","enabled":true}]},{"slug":"DelegatedTaskCompleted","label":"Delegated
+        Task Completed","channels":[{"slug":"in_app","label":"In App","enabled":true},{"slug":"mobile_push","label":"Mobile
+        Push","enabled":true},{"slug":"web_push","label":"Web Push","enabled":true},{"slug":"email","label":"Email","enabled":false},{"slug":"slack","label":"Slack","enabled":true},{"slug":"sms","label":"Sms","enabled":true}]},{"slug":"ListShared","label":"List
+        Shared","channels":[{"slug":"in_app","label":"In App","enabled":true},{"slug":"mobile_push","label":"Mobile
+        Push","enabled":true},{"slug":"web_push","label":"Web Push","enabled":true},{"slug":"email","label":"Email","enabled":false},{"slug":"slack","label":"Slack","enabled":true},{"slug":"sms","label":"Sms","enabled":true}]},{"slug":"StayInTouchBatchedReminder","label":"Stay
+        In Touch Batched Reminder","channels":[{"slug":"in_app","label":"In App","enabled":true},{"slug":"mobile_push","label":"Mobile
+        Push","enabled":true},{"slug":"web_push","label":"Web Push","enabled":true},{"slug":"email","label":"Email","enabled":false},{"slug":"slack","label":"Slack","enabled":true},{"slug":"sms","label":"Sms","enabled":true}]},{"slug":"CommentAdded","label":"Comment
+        Added","channels":[{"slug":"in_app","label":"In App","enabled":true},{"slug":"mobile_push","label":"Mobile
+        Push","enabled":true},{"slug":"web_push","label":"Web Push","enabled":true},{"slug":"email","label":"Email","enabled":false},{"slug":"slack","label":"Slack","enabled":true},{"slug":"sms","label":"Sms","enabled":true}]},{"slug":"CommentMentioned","label":"Comment
+        Mentioned","channels":[{"slug":"in_app","label":"In App","enabled":true},{"slug":"mobile_push","label":"Mobile
+        Push","enabled":true},{"slug":"web_push","label":"Web Push","enabled":true},{"slug":"email","label":"Email","enabled":false},{"slug":"slack","label":"Slack","enabled":true},{"slug":"sms","label":"Sms","enabled":true}]},{"slug":"NewProjectMembership","label":"New
+        Workspace Membership","channels":[{"slug":"in_app","label":"In App","enabled":true},{"slug":"mobile_push","label":"Mobile
+        Push","enabled":true},{"slug":"web_push","label":"Web Push","enabled":true},{"slug":"email","label":"Email","enabled":false},{"slug":"slack","label":"Slack","enabled":true},{"slug":"sms","label":"Sms","enabled":true}]},{"slug":"SharedListView","label":"List
+        View Shared","channels":[{"slug":"in_app","label":"In App","enabled":true},{"slug":"mobile_push","label":"Mobile
+        Push","enabled":true},{"slug":"web_push","label":"Web Push","enabled":true},{"slug":"email","label":"Email","enabled":false},{"slug":"slack","label":"Slack","enabled":true},{"slug":"sms","label":"Sms","enabled":true}]}]}}
+
+        '
+  recorded_at: Tue, 25 Feb 2025 00:50:30 GMT
+recorded_with: VCR 6.3.1

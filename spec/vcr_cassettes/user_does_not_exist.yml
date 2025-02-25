@@ -1,0 +1,77 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.magicbell.io/notification_preferences
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      X-Magicbell-Api-Key:
+      - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      X-Magicbell-Api-Secret:
+      - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      X-Magicbell-User-External-Id:
+      - non-existent-external-id
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 401
+      message: Unauthorized
+    headers:
+      Date:
+      - Tue, 25 Feb 2025 00:50:30 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '261'
+      Connection:
+      - keep-alive
+      Access-Control-Max-Age:
+      - '86400'
+      X-Amzn-Requestid:
+      - b191d942-8238-419b-94e5-d8ed101336bf
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      X-Amzn-Trace-Id:
+      - Root=1-67bd13d6-2996abd2246c03ea0f546f72;Parent=6e21b4ba5502aa78;Sampled=0;Lineage=1:a1dcffa6:0
+      X-Cache:
+      - Error from cloudfront
+      Via:
+      - 1.1 fda8cdb1c5d1bc3e2d4cabe818dc8c5e.cloudfront.net (CloudFront)
+      X-Amz-Cf-Pop:
+      - SYD3-P1
+      X-Amz-Cf-Id:
+      - j88KFA-uJy2siETuEwYPCJsp_4Kun_erpA_KCm8AVL6eKwi9g9YHWw==
+      Cf-Cache-Status:
+      - DYNAMIC
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=t2cWYHnrvXKtS5uhSgGDot39OvmBKUlwnF0HpRkyigt6zERIpAnyWfn5xANX8JbxsJ3b3Y6ZEfgwg8%2BvwJ%2FKUDFJk%2FmFFPTlbzJyuX8HdzZ5WvvcvDg940GktCD6DG34jss%3D"}],"group":"cf-nel","max_age":604800}'
+      Nel:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9173b39d8df75727-SYD
+      Server-Timing:
+      - cfL4;desc="?proto=TCP&rtt=7825&min_rtt=7162&rtt_var=4013&sent=4&recv=6&lost=0&retrans=0&sent_bytes=2796&recv_bytes=998&delivery_rate=232218&cwnd=233&unsent_bytes=0&cid=be3da222a978f6cd&ts=323&x=0"
+    body:
+      encoding: UTF-8
+      string: '{"errors":[{"code":"user_not_found","message":"User not found","suggestion":"Please
+        provide the correct ''X-MAGICBELL-USER-EMAIL'' or ''X-MAGICBELL-USER-EXTERNAL-ID''
+        header to identify the user.","help_link":"https://magicbell.com/docs/rest-api/authentication"}]}
+
+        '
+  recorded_at: Tue, 25 Feb 2025 00:50:30 GMT
+recorded_with: VCR 6.3.1
